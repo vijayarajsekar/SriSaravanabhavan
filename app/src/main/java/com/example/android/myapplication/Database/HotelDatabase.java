@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.android.myapplication.Models.PrintPojo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HotelDatabase implements HotelDbConstants {
 
@@ -59,40 +64,72 @@ public class HotelDatabase implements HotelDbConstants {
         }
     }
 
-//
-//    /**
-//     * @return All The Available Users List
-//     */
-//    public List<VoiceMail> GetAllMail() {
-//
-//        List<VoiceMail> contactList = new ArrayList<VoiceMail>();
-//
-//        try {
-//
-//            OpenCon();
-//            Cursor cursor = mSQLiteDatabase.rawQuery(SELECT_ALL_MAIL, null);
-//
-//            if (cursor.moveToFirst()) {
-//
-//                do {
-//                    contactList.add(new VoiceMail(
-//
-//                            cursor.getString(1),
-//                            cursor.getString(2),
-//                            cursor.getString(3),
-//                            cursor.getString(4),
-//                            cursor.getString(5),
-//                            Integer.parseInt(cursor.getString(6))));
-//
-//                } while (cursor.moveToNext());
-//            }
-//            return contactList;
-//        } catch (Exception ex) {
-//            Logger.Print(TAG + " - - GetAllUser DB Err", ex.toString());
-//        }
-//
-//        return contactList;
-//    }
+
+    /**
+     * @return All The Available Data List
+     */
+    public List<PrintPojo> GetAllCounts() {
+
+        List<PrintPojo> contactList = new ArrayList<PrintPojo>();
+
+        try {
+
+            OpenCon();
+            Cursor cursor = mSQLiteDatabase.rawQuery(SELECT_ALL_COUNT, null);
+
+            if (cursor.moveToFirst()) {
+
+                do {
+                    contactList.add(new PrintPojo(
+
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(3)));
+
+                } while (cursor.moveToNext());
+            }
+            return contactList;
+        } catch (Exception ex) {
+            Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
+        }
+
+        return contactList;
+    }
+
+    /**
+     * @return All The Available Data List - DateWise
+     */
+    public List<PrintPojo> GetAllCountDateWise(String _fromDate, String _toDate) {
+
+        String mQueryTemp = SELECT_ALL_COUNT_DATE_WISE.replace("$from", _fromDate);
+
+        String mQuery = mQueryTemp.replace("$to", _toDate);
+
+        List<PrintPojo> contactList = new ArrayList<PrintPojo>();
+
+        try {
+
+            OpenCon();
+            Cursor cursor = mSQLiteDatabase.rawQuery(mQuery, null);
+
+            if (cursor.moveToFirst()) {
+
+                do {
+                    contactList.add(new PrintPojo(
+
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(3)));
+
+                } while (cursor.moveToNext());
+            }
+            return contactList;
+        } catch (Exception ex) {
+            Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
+        }
+
+        return contactList;
+    }
 
     /**
      * @return All Online Users Count

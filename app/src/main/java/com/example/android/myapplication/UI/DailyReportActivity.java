@@ -62,25 +62,27 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
 
         mSearch = (Button) findViewById(R.id.btn_search);
 
-        mDataList = new ArrayList<PrintPojo>();
+//        mDataList = new ArrayList<PrintPojo>();
 
         calendar = Calendar.getInstance();
-        mSimpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        for (int x = 1; x < 15; x++) {
-
-            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
-
-            mHotelDatabase.InsertRecord("User " + x, "07-" + x + "-1986", String.valueOf(x * 10));
-
-        }
-
-        if (mDataList.size() != 0) {
-
-            mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
-
-            mListView.setAdapter(mTotalCountAdapter);
-        }
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//        for (int x = 1; x < 15; x++) {
+//
+////            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
+//
+//            mHotelDatabase.InsertRecord("User " + x, "1986-" + x + "-01", String.valueOf(x * 10));
+//
+//        }
+//
+//        mDataList = mHotelDatabase.GetAllCounts();
+//
+//        if (mDataList.size() != 0) {
+//
+//            mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
+//
+//            mListView.setAdapter(mTotalCountAdapter);
+//        }
 
         mFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,11 +105,18 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
             public void onClick(View view) {
 
                 if (mCompareDate1.after(new Date())) {
-                    Toast.makeText(mContext, "Yes1", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "From Date is Greater Than Today", Toast.LENGTH_SHORT).show();
                 } else if (mCompareDate2.after(new Date())) {
-                    Toast.makeText(mContext, "Yes2", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "To Date is Greater Than Today", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "All Fine", Toast.LENGTH_SHORT).show();
+
+                    mDataList = mHotelDatabase.GetAllCountDateWise(mFromDate.getText().toString(), mToDate.getText().toString());
+
+                    if (mDataList.size() != 0) {
+                        mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
+                        mListView.setAdapter(mTotalCountAdapter);
+                    }
                 }
             }
         });

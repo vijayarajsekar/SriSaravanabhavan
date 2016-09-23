@@ -20,8 +20,11 @@ public interface HotelDbConstants {
             + PRINT_DATE + " DATETIME not null,"
             + COUNT_NUMBER + " TEXT not null);";
 
-    // Select All The Users From The Local Database
-    public String SELECT_ALL_MAIL = "SELECT  * FROM " + HOTEL_TABLE;
+    // Select All The Data From The Local Database
+    public String SELECT_ALL_COUNT = "SELECT  * FROM " + HOTEL_TABLE;
+
+    // Select All The Data From The Local Database
+    public String SELECT_ALL_COUNT_DATE_WISE = "SELECT  * FROM " + HOTEL_TABLE + " WHERE " + PRINT_DATE + " BETWEEN($from" + ",$to)";
 
     public String SELECT_MAIL_COUNT = "SELECT count(*) as Count FROM " + HOTEL_TABLE;
 
