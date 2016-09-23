@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="background_window">#FFE5E5E5</color>
+
+    <color name="menu_viwe_bg">#00A083</color>
+    <color name="menu_viwe_bg_light">#8000A083</color>
+    <color name="menu_viwe_title">#FFF4B1</color>
+
+</resources>

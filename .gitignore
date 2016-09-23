@@ -1,8 +1,13 @@
+.gradle
+.DS_Store
+/build
+/captures
+### Android template
 # Built application files
 *.apk
 *.ap_
 
-# Files for the ART/Dalvik VM
+# Files for the Dalvik VM
 *.dex
 
 # Java class files
@@ -10,8 +15,7 @@
 
 # Generated files
 bin/
-gen/
-out/
+gen/s
 
 # Gradle files
 .gradle/
@@ -28,13 +32,18 @@ proguard/
 
 # Android Studio Navigation editor temp files
 .navigation/
+### JetBrains template
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
 
-# Android Studio captures folder
-captures/
-
-# Intellij
 *.iml
-.idea/workspace.xml
 
-# Keystore files
-*.jks
+## Directory-based project format:
+.idea/
+
+
+# IntelliJ
+/out/
+
+
+/.project
+
