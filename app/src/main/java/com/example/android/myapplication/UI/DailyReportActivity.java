@@ -66,14 +66,13 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
 
         calendar = Calendar.getInstance();
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//
-//        for (int x = 1; x < 15; x++) {
-//
-////            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
-//
-//            mHotelDatabase.InsertRecord("User " + x, "1986-" + x + "-01", String.valueOf(x * 10));
-//
-//        }
+
+        for (int x = 1; x < 10; x++) {
+
+//            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
+
+            mHotelDatabase.InsertRecord("User " + x, "2016-" + "0"+x + "-01", String.valueOf(x * 10));
+        }
 //
 //        mDataList = mHotelDatabase.GetAllCounts();
 //

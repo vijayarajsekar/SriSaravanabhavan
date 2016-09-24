@@ -72,4 +72,16 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
+    <string name="daily_report">Daily Report</string>
+
+    <string name="hint_mail">Email</string>
+    <string name="hint_passwd">Password</string>
+    <string name="hint_mobile">Mobile number</string>
+
+    <string name="text_signup">Not a member? Sign up now</string>
+    <string name="text_login">Already registered. Login now</string>
+
+    <string name="str_login">Login</string>
+    <string name="str_signup">Sign up</string>
+
 </resources>

@@ -76,7 +76,9 @@ public class TotalCountAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.mSno.setText(mReportList.get(position).getSno());
+        int tempPos = position + 1;
+
+        holder.mSno.setText("" + tempPos);
         holder.mDate.setText(mReportList.get(position).getDateWise());
         holder.mCount.setText(mReportList.get(position).getTotalCount());
 

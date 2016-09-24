@@ -149,9 +149,9 @@ public class MainActivity extends FragmentActivity {
                         }
                     }
                 });
-//                mAlertDialog.show();
+                mAlertDialog.show();
 
-                startActivity(new Intent(mContext, DailyReportActivity.class));
+//                startActivity(new Intent(mContext, DailyReportActivity.class));
 
             }
         });
