@@ -71,7 +71,7 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
 
 //            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
 
-            mHotelDatabase.InsertRecord("User " + x, "2016-" + "0"+x + "-01", String.valueOf(x * 10));
+            mHotelDatabase.InsertRecord("User " + x, "2016-" + "0" + x + "-01", String.valueOf(x * 10));
         }
 //
 //        mDataList = mHotelDatabase.GetAllCounts();
@@ -108,7 +108,6 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                 } else if (mCompareDate2.after(new Date())) {
                     Toast.makeText(mContext, "To Date is Greater Than Today", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "All Fine", Toast.LENGTH_SHORT).show();
 
                     mDataList = mHotelDatabase.GetAllCountDateWise(mFromDate.getText().toString(), mToDate.getText().toString());
 
