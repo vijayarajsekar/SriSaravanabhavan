@@ -138,9 +138,10 @@ public class HotelDatabase implements HotelDbConstants {
      * @param uname
      * @param passwd
      * @param mobile
+     * @param timeStamp
      */
 
-    public void InsertSingleUser(String uname, String passwd, String mobile) {
+    public void InsertSingleUser(String uname, String passwd, String mobile, String timeStamp) {
 
         try {
 
@@ -149,8 +150,9 @@ public class HotelDatabase implements HotelDbConstants {
             ContentValues mValues = new ContentValues();
 
             mValues.put(NAME, uname);
-            mValues.put(PRINT_DATE, passwd);
-            mValues.put(COUNT_NUMBER, mobile);
+            mValues.put(PASSWORD, passwd);
+            mValues.put(MOBILE, mobile);
+            mValues.put(PRINT_DATE, timeStamp);
 
             mSQLiteDatabase.insert(TABLE_USERS, null, mValues);
 
@@ -195,6 +197,4 @@ public class HotelDatabase implements HotelDbConstants {
 
         return contactList;
     }
-
-
 }

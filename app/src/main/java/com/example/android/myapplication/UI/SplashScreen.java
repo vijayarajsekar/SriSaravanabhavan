@@ -17,13 +17,16 @@ public class SplashScreen extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                new AppPreferences().setIsLogin(true);
-                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
-                finish();
-            }
-        }, 3000);
+        if (!new AppPreferences().getIsLogin()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(SplashScreen.this, LoginActivity.class));
+                    finish();
+                }
+            }, 3000);
+        } else {
+            startActivity(new Intent(SplashScreen.this, MainActivity.class));
+        }
     }
 }

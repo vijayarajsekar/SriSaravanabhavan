@@ -6,7 +6,7 @@ public interface HotelDbConstants {
     public String DATABASE_NAME = "SriSaravana";
 
     public String TABLE_HOTEL = "HotelTable";
-    public String TABLE_USERS = "HotelTable";
+    public String TABLE_USERS = "Users";
 
     public int DATABASE_VERSION = 1;
 

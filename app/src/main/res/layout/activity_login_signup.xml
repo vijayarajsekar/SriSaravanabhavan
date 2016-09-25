@@ -23,7 +23,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_name"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/editText2"
@@ -33,7 +34,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_passwd"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/btn_login"
@@ -81,7 +83,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_name"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/editText4"
@@ -91,7 +94,9 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_passwd"
-            android:padding="10dp" />
+            android:inputType="textWebPassword"
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/editText5"
@@ -101,7 +106,9 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_mobile"
-            android:padding="10dp" />
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/btn_signup"

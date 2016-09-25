@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.android.myapplication.Adapter.PagerAdapter;
+import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 
 public class MainActivity extends FragmentActivity {
@@ -93,6 +94,11 @@ public class MainActivity extends FragmentActivity {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
+
+        /**
+         * Set Logged in User Name
+         */
+        ((TextView) findViewById(R.id.text_username)).setText("Login - " + new AppPreferences().getName());
 
         mItem1.setOnClickListener(new View.OnClickListener() {
             @Override

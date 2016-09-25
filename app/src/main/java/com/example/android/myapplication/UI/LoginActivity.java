@@ -1,6 +1,7 @@
 package com.example.android.myapplication.UI;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.android.myapplication.Database.HotelDatabase;
 import com.example.android.myapplication.Models.UsersPojo;
+import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 
 import java.util.List;
@@ -26,6 +28,8 @@ public class LoginActivity extends Activity {
     private String mstrName, mstrPaswd;
 
     private Button mLogin;
+
+    private Context mContext;
 
     private TextView mSignUpText;
 
@@ -41,7 +45,9 @@ public class LoginActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login_signup);
 
-        mHotelDatabase = new HotelDatabase(this);
+        mContext = this;
+
+        mHotelDatabase = new HotelDatabase(mContext);
 
         mloginName = (EditText) findViewById(R.id.editText1);
         mloginPaswd = (EditText) findViewById(R.id.editText2);
@@ -68,6 +74,8 @@ public class LoginActivity extends Activity {
                     mUsersPojo = mHotelDatabase.GetSingleUser(mstrName, mstrPaswd);
 
                     if (mUsersPojo != null && mUsersPojo.size() != 0) {
+                        new AppPreferences().setIsLogin(true);
+                        new AppPreferences().setName(mUsersPojo.get(0).getName());
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     } else {
                         Toast.makeText(LoginActivity.this, "Invalid Name / Password", Toast.LENGTH_SHORT).show();
