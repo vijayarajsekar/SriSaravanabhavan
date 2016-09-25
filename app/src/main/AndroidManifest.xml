@@ -54,8 +54,16 @@
         </activity>
 
         <activity
-            android:name=".UI.LoginSignUp"
-            android:label="@string/app_name">
+            android:name=".UI.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+
+        </activity>
+
+        <activity
+            android:name=".UI.SignUpActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
 
         </activity>
 

@@ -21,7 +21,7 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 new AppPreferences().setIsLogin(true);
-                startActivity(new Intent(SplashScreen.this, LoginSignUp.class));
+                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
                 finish();
             }
         }, 3000);

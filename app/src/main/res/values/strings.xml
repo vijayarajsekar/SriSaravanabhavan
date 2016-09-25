@@ -74,7 +74,7 @@
 
     <string name="daily_report">Daily Report</string>
 
-    <string name="hint_mail">Email</string>
+    <string name="hint_name">Name</string>
     <string name="hint_passwd">Password</string>
     <string name="hint_mobile">Mobile number</string>
 

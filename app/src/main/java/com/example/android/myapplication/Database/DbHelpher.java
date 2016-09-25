@@ -17,12 +17,15 @@ class DbHelpher extends SQLiteOpenHelper implements HotelDbConstants {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_HOTEL_TABLE);
+        db.execSQL(CREATE_USERS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_HOTEL_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + CREATE_USERS_TABLE);
+
         onCreate(db);
     }
 }

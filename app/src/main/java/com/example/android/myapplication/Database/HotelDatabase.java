@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.android.myapplication.Models.PrintPojo;
+import com.example.android.myapplication.Models.UsersPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class HotelDatabase implements HotelDbConstants {
             mValues.put(PRINT_DATE, date);
             mValues.put(COUNT_NUMBER, count);
 
-            mSQLiteDatabase.insert(HOTEL_TABLE, null, mValues);
+            mSQLiteDatabase.insert(TABLE_HOTEL, null, mValues);
 
             CloseCon();
 
@@ -132,33 +133,68 @@ public class HotelDatabase implements HotelDbConstants {
     }
 
     /**
-     * @return All Online Users Count
+     * Add Single User
+     *
+     * @param uname
+     * @param passwd
+     * @param mobile
      */
-    public int GetVoiceMailCount(String uniqid) {
+
+    public void InsertSingleUser(String uname, String passwd, String mobile) {
 
         try {
 
             OpenCon();
 
-            String data = "";
+            ContentValues mValues = new ContentValues();
 
-            Cursor cursor = mSQLiteDatabase.rawQuery(SELECT_MAIL_COUNT.toString(), null);
+            mValues.put(NAME, uname);
+            mValues.put(PRINT_DATE, passwd);
+            mValues.put(COUNT_NUMBER, mobile);
+
+            mSQLiteDatabase.insert(TABLE_USERS, null, mValues);
+
+            CloseCon();
+
+        } catch (Exception ex) {
+            Log.v(TAG + " - - Insert User DB Err", ex.toString());
+        }
+    }
+
+    /**
+     * @return Single User Details
+     */
+    public List<UsersPojo> GetSingleUser(String _name, String _passwd) {
+
+        String mQueryTemp = SELECT_SINGLE_USER_DETAILS.replace("$name", _name);
+
+        String mQuery = mQueryTemp.replace("$pass", _passwd);
+
+        List<UsersPojo> contactList = new ArrayList<UsersPojo>();
+
+        try {
+
+            OpenCon();
+            Cursor cursor = mSQLiteDatabase.rawQuery(mQuery, null);
 
             if (cursor.moveToFirst()) {
 
                 do {
-
-                    data = cursor.getString(cursor.getColumnIndex("Count"));
+                    contactList.add(new UsersPojo(
+                            cursor.getString(0),
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(3)));
 
                 } while (cursor.moveToNext());
             }
-
-            return Integer.parseInt(data);
-
+            return contactList;
         } catch (Exception ex) {
             Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
         }
 
-        return -1;
+        return contactList;
     }
+
+
 }

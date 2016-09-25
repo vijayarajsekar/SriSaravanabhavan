@@ -3,64 +3,131 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1CA182"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:orientation="vertical">
 
-
-    <EditText
-        android:id="@+id/editText1"
+    <LinearLayout
+        android:id="@+id/login_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/login_bg"
-        android:hint="@string/hint_mail"
-        android:padding="10dp" />
+        android:layout_height="match_parent"
+        android:background="#1CA182"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="visible">
 
-    <EditText
-        android:id="@+id/editText2"
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/login_bg"
+            android:hint="@string/hint_name"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/login_bg"
+            android:hint="@string/hint_passwd"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/login_btn_bg"
+            android:text="@string/str_login"
+            android:textColor="@color/menu_viwe_bg"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_signup"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/text_signup"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/signup_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/login_bg"
-        android:hint="@string/hint_passwd"
-        android:padding="10dp" />
+        android:layout_height="match_parent"
+        android:background="#1CA182"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone">
 
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/login_bg"
-        android:hint="@string/hint_mobile"
-        android:padding="10dp"
-        android:visibility="gone" />
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/login_bg"
+            android:hint="@string/hint_name"
+            android:padding="10dp" />
 
-    <Button
-        android:id="@+id/btn_loginsignup"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/login_btn_bg"
-        android:text="@string/str_login"
-        android:textColor="@color/menu_viwe_bg"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/login_bg"
+            android:hint="@string/hint_passwd"
+            android:padding="10dp" />
 
-    <TextView
-        android:id="@+id/text_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:text="@string/text_signup"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/login_bg"
+            android:hint="@string/hint_mobile"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/login_btn_bg"
+            android:text="@string/str_signup"
+            android:textColor="@color/menu_viwe_bg"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/text_login"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
