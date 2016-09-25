@@ -37,7 +37,6 @@ public class SignUpActivity extends Activity {
 
     private java.util.Date mDate;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +66,7 @@ public class SignUpActivity extends Activity {
         mSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 startActivity(new Intent(SignUpActivity.this, MainActivity.class));
 
                 mstrName = msignupName.getText().toString();
@@ -76,7 +76,7 @@ public class SignUpActivity extends Activity {
 
                 if (mstrName != null && mstrName.toString().length() != 0 && msignupMobileNumber.toString().length() != 0) {
 
-                    mHotelDatabase.InsertSingleUser(mstrName, mstrPaswd, mstrMobileNumber,mTimeStamp);
+                    mHotelDatabase.InsertSingleUser(mstrName, mstrPaswd, mstrMobileNumber, mTimeStamp);
 
                     startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
 

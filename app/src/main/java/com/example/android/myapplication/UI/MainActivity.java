@@ -104,6 +104,11 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View view) {
 
+                mSideMenuView.setVisibility(View.GONE);
+                mSideMenuView.startAnimation(mAnimationOut);
+                mIsVisible = false;
+
+                startActivity(new Intent(mContext, SettingsActivity.class));
             }
         });
 

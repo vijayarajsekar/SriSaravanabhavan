@@ -22,6 +22,7 @@ import com.example.android.myapplication.Model.SpnModels;
 import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.Utils.ShowMsg;
+import com.example.android.myapplication.Utils.WiFiBTStatus;
 
 public class SettingsActivity extends Activity implements View.OnClickListener, ReceiveListener {
 
@@ -30,6 +31,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     private Spinner mSpnSeries = null;
     private Spinner mSpnLang = null;
     private Printer mPrinter = null;
+
+    private WiFiBTStatus mWiFiBTStatus;
 
     private AppPreferences mPreferences;
 
@@ -42,6 +45,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         mContext = this;
         mPreferences = new AppPreferences();
+
+        mWiFiBTStatus = new WiFiBTStatus();
 
         mButton = (Button) findViewById(R.id.btn_save);
 
@@ -101,7 +106,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         } catch (Exception e) {
             ShowMsg.showException(e, "setLogSettings", mContext);
         }
-        mEditTarget = (EditText) findViewById(R.id.edtTarget);
 
         mSpnSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -133,6 +137,14 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 finish();
             }
         });
+
+        /**
+         * Set Old Values
+         */
+        mEditTarget.setText(mPreferences.getPrinterTarget());
+        mSpnSeries.setSelection(mPreferences.getPrinterModel());
+        mSpnLang.setSelection(mPreferences.getPrinterLang());
+
     }
 
     @Override
@@ -154,6 +166,12 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         switch (v.getId()) {
             case R.id.btnDiscovery:
+
+                if (!mWiFiBTStatus.isBluetoothAvailable()) {
+                    ShowMsg.showMsg("Enabling Bluetooth", mContext);
+                    mWiFiBTStatus.SetBluetoothStatus(true);
+                }
+
                 intent = new Intent(this, DiscoveryActivity.class);
                 startActivityForResult(intent, 0);
                 break;

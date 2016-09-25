@@ -18,11 +18,16 @@ import com.epson.epos2.Epos2Exception;
 import com.epson.epos2.printer.Printer;
 import com.epson.epos2.printer.PrinterStatusInfo;
 import com.epson.epos2.printer.ReceiveListener;
+import com.example.android.myapplication.Database.HotelDatabase;
 import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.UI.SettingsActivity;
 import com.example.android.myapplication.Utils.ShowMsg;
 import com.example.android.myapplication.Utils.WiFiBTStatus;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by VijayarajSekar on 8/31/2016.
@@ -44,16 +49,36 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
     private int mPrintCount = 0;
 
+    private HotelDatabase mHotelDatabase;
+
+    private Calendar mCalendar;
+
+    private SimpleDateFormat mSimpleDateFormat;
+
+    private String mTimeStamp;
+
+    private java.util.Date mDate;
+
+    private String mTotalCountDb;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.screen_lunch, container, false);
         mContext = getActivity();
 
+//        initializeObject();
+
         mPreferences = new AppPreferences();
 
         mWiFiBTStatus = new WiFiBTStatus();
 
+        mHotelDatabase = new HotelDatabase(mContext);
+
+        mDate = new java.util.Date();
+
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        mCalendar = Calendar.getInstance();
         mPrintToken = (Button) mRootView.findViewById(R.id.btn_token);
 
         mProgressDialog = new ProgressDialog(mContext);
@@ -198,6 +223,8 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             method = "addText";
             mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
 
+            mTotalCountDb = String.valueOf(mPreferences.getPrintCount());
+
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
 
@@ -262,8 +289,8 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
         try {
 
-            if (mPreferences.getPrinterModel() != -1 && mPreferences.getPrinterLang() != -1) {
-                mPrinter = new Printer(mPreferences.getPrinterModel(), mPreferences.getPrinterLang(),
+            if (new AppPreferences().getPrinterModel() != -1 && new AppPreferences().getPrinterLang() != -1) {
+                mPrinter = new Printer(new AppPreferences().getPrinterModel(), new AppPreferences().getPrinterLang(),
                         mContext);
             }
 
@@ -439,7 +466,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                             if (code == 0)
                                 mPrintCount = 2;
 
+                            mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
                             mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + mTotalCountDb);
+
+                            System.out.println(" ~  ~ ~ ~ 11111 " + mTotalCountDb);
 
                             runPrintReceiptSequence();
                         }
@@ -451,6 +483,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 if (mPrintCount == 2) {
                     mProgressDialog.dismiss();
                     mPrintToken.setEnabled(true);
+
+                    mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
+
+                    mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + mTotalCountDb);
+                    System.out.println(" ~  ~ ~ ~ 22222 " + mTotalCountDb);
+
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
 
                     new Thread(new Runnable() {
