@@ -72,6 +72,8 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
+    <string name="str_print">Print</string>
+
     <string name="daily_report">Daily Report</string>
 
     <string name="hint_name">Name</string>
@@ -83,5 +85,15 @@
 
     <string name="str_login">Login</string>
     <string name="str_signup">Sign up</string>
+
+    <string name="str_update_passwd">Update</string>
+
+    <string name="str_updatepasswd">Update Password</string>
+
+    <string name="str_oldpasswd">Old password</string>
+    <string name="str_newpasswd">New password</string>
+    <string name="str_renewpasswd">Re type new password</string>
+
+    <string name="str_address">( High Class Veg Restaurant ) Hotel City View, Opp New Bus Stand, Salem -4 \n Ph: 0427-2433702 </string>
 
 </resources>

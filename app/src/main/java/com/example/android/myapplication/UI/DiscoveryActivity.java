@@ -17,6 +17,7 @@ import com.epson.epos2.discovery.DiscoveryListener;
 import com.epson.epos2.discovery.FilterOption;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.Utils.ShowMsg;
+import com.example.android.myapplication.Utils.WiFiBTStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,21 +29,29 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
     private SimpleAdapter mPrinterListAdapter = null;
     private FilterOption mFilterOption = null;
 
+    private WiFiBTStatus mWiFiBTStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
 
         mContext = this;
+        mWiFiBTStatus = new WiFiBTStatus();
 
-        Button button = (Button)findViewById(R.id.btnRestart);
+        if (!mWiFiBTStatus.isBluetoothAvailable()) {
+            ShowMsg.showMsg("Enabling Bluetooth", mContext);
+            mWiFiBTStatus.SetBluetoothStatus(true);
+        }
+
+        Button button = (Button) findViewById(R.id.btnRestart);
         button.setOnClickListener(this);
 
         mPrinterList = new ArrayList<HashMap<String, String>>();
         mPrinterListAdapter = new SimpleAdapter(this, mPrinterList, R.layout.list_at,
-                                                new String[] { "PrinterName", "Target" },
-                                                new int[] { R.id.PrinterName, R.id.Target });
-        ListView list = (ListView)findViewById(R.id.lstReceiveData);
+                new String[]{"PrinterName", "Target"},
+                new int[]{R.id.PrinterName, R.id.Target});
+        ListView list = (ListView) findViewById(R.id.lstReceiveData);
         list.setAdapter(mPrinterListAdapter);
         list.setOnItemClickListener(this);
 
@@ -51,8 +60,7 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
         mFilterOption.setEpsonFilter(Discovery.FILTER_NAME);
         try {
             Discovery.start(this, mFilterOption, mDiscoveryListener);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ShowMsg.showException(e, "start", mContext);
         }
     }
@@ -65,8 +73,7 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
             try {
                 Discovery.stop();
                 break;
-            }
-            catch (Epos2Exception e) {
+            } catch (Epos2Exception e) {
                 if (e.getErrorStatus() != Epos2Exception.ERR_PROCESSING) {
                     break;
                 }
@@ -93,7 +100,7 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent();
 
-        HashMap<String, String> item  = mPrinterList.get(position);
+        HashMap<String, String> item = mPrinterList.get(position);
         intent.putExtra(getString(R.string.title_target), item.get("Target"));
 
         setResult(RESULT_OK, intent);
@@ -106,8 +113,7 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
             try {
                 Discovery.stop();
                 break;
-            }
-            catch (Epos2Exception e) {
+            } catch (Epos2Exception e) {
                 if (e.getErrorStatus() != Epos2Exception.ERR_PROCESSING) {
                     ShowMsg.showException(e, "stop", mContext);
                     return;
@@ -120,8 +126,7 @@ public class DiscoveryActivity extends Activity implements View.OnClickListener,
 
         try {
             Discovery.start(this, mFilterOption, mDiscoveryListener);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ShowMsg.showException(e, "stop", mContext);
         }
     }

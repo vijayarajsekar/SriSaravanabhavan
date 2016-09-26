@@ -35,7 +35,6 @@ public class HotelDatabase implements HotelDbConstants {
         mSQLiteDatabase.close();
     }
 
-
     /**
      * Add Single Record
      *
@@ -118,9 +117,9 @@ public class HotelDatabase implements HotelDbConstants {
                 do {
                     contactList.add(new PrintPojo(
 
+                            cursor.getString(0),
                             cursor.getString(1),
-                            cursor.getString(2),
-                            cursor.getString(3)));
+                            cursor.getString(2)));
 
                 } while (cursor.moveToNext());
             }
@@ -196,5 +195,32 @@ public class HotelDatabase implements HotelDbConstants {
         }
 
         return contactList;
+    }
+
+    /**
+     * Update Single User Password
+     *
+     * @param name
+     * @param passwd
+     */
+
+    public void UpdatePassword(String name, String passwd) {
+
+        try {
+
+            OpenCon();
+
+            ContentValues mValues = new ContentValues();
+
+            mValues.put(PASSWORD, passwd);
+
+            mSQLiteDatabase.update(TABLE_USERS, mValues, NAME + " = ?",
+                    new String[]{String.valueOf(name)});
+
+            CloseCon();
+
+        } catch (Exception ex) {
+            Log.v(TAG + " - - Insert User DB Err", ex.toString());
+        }
     }
 }

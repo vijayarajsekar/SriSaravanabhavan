@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,8 +42,12 @@ import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.android.myapplication.Adapter.PagerAdapter;
+import com.example.android.myapplication.Database.HotelDatabase;
+import com.example.android.myapplication.Models.UsersPojo;
 import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
+
+import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
@@ -65,6 +71,10 @@ public class MainActivity extends FragmentActivity {
     private AlertDialog.Builder builder;
     private AlertDialog mAlertDialog;
 
+    private List<UsersPojo> mUsersPojo;
+
+    private HotelDatabase mHotelDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +82,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         mContext = MainActivity.this;
+        mHotelDatabase = new HotelDatabase(mContext);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1CA182")));
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -109,12 +120,20 @@ public class MainActivity extends FragmentActivity {
                 mIsVisible = false;
 
                 startActivity(new Intent(mContext, SettingsActivity.class));
+
+//                startActivity(new Intent(mContext, PrintDailyCount.class));
             }
         });
 
         mItem2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mSideMenuView.setVisibility(View.GONE);
+                mSideMenuView.startAnimation(mAnimationOut);
+                mIsVisible = false;
+
+                startActivity(new Intent(mContext, UpdatePasswordActivity.class));
 
             }
         });
@@ -132,6 +151,8 @@ public class MainActivity extends FragmentActivity {
 
                 mPasscode = new EditText(mContext);
                 mPasscode.setHint(R.string.passcode);
+                mPasscode.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+                mPasscode.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
                 mLayoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -152,7 +173,9 @@ public class MainActivity extends FragmentActivity {
 
                         mStrPasscode = mPasscode.getText().toString();
 
-                        if (mStrPasscode != null && mStrPasscode.toString().length() > 5 && mStrPasscode.toString().equals("qwerty")) {
+                        mUsersPojo = mHotelDatabase.GetSingleUser(new AppPreferences().getName(), mStrPasscode);
+
+                        if (mStrPasscode != null && mUsersPojo.size() > 0) {
                             startActivity(new Intent(mContext, DailyReportActivity.class));
                         } else {
                             Toast.makeText(getApplicationContext(),
@@ -160,10 +183,8 @@ public class MainActivity extends FragmentActivity {
                         }
                     }
                 });
+
                 mAlertDialog.show();
-
-//                startActivity(new Intent(mContext, DailyReportActivity.class));
-
             }
         });
     }

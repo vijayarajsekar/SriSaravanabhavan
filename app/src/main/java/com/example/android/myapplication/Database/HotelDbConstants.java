@@ -40,8 +40,6 @@ public interface HotelDbConstants {
     public String SELECT_SINGLE_USER_DETAILS = "SELECT  * FROM " + TABLE_USERS + " WHERE " + NAME + " = " + "'$name' AND " + PASSWORD + " = " + "'$pass'";
 
     // Select All The Data From The Local Database
-    public String SELECT_ALL_COUNT_DATE_WISE = "SELECT  * FROM " + TABLE_HOTEL + " WHERE " + PRINT_DATE + " BETWEEN " + "'$from' AND " + "'$to'";
-
-    public String SELECT_MAIL_COUNT = "SELECT count(*) as Count FROM " + TABLE_HOTEL;
+    public String SELECT_ALL_COUNT_DATE_WISE = "SELECT " + ID + "," + PRINT_DATE + ", sum(CountNumber) as TotalCount FROM " + TABLE_HOTEL + " WHERE " + PRINT_DATE + " BETWEEN " + "'$from' AND " + "'$to'  GROUP BY " + PRINT_DATE;
 
 }

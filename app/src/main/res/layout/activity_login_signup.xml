@@ -34,6 +34,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/login_bg"
             android:hint="@string/hint_passwd"
+            android:inputType="textWebPassword"
             android:padding="10dp"
             android:singleLine="true" />
 

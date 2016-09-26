@@ -1,186 +1,123 @@
 package com.example.android.myapplication.UI;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.epson.epos2.Epos2Exception;
-import com.epson.epos2.Log;
 import com.epson.epos2.printer.Printer;
 import com.epson.epos2.printer.PrinterStatusInfo;
 import com.epson.epos2.printer.ReceiveListener;
-import com.example.android.myapplication.Model.SpnModels;
+import com.example.android.myapplication.Database.HotelDatabase;
 import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.Utils.ShowMsg;
 import com.example.android.myapplication.Utils.WiFiBTStatus;
 
-public class SettingsActivity extends Activity implements View.OnClickListener, ReceiveListener {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    private Context mContext = null;
-    private EditText mEditTarget = null;
-    private Spinner mSpnSeries = null;
-    private Spinner mSpnLang = null;
+/**
+ * Created by VijayarajSekar on 8/31/2016.
+ */
+public class PrintDailyCount extends AppCompatActivity implements ReceiveListener {
+
+    private String TAG = PrintDailyCount.class.getSimpleName();
+
+    private Context mContext;
+
+    private Button mPrintToken;
+
+    private WiFiBTStatus mWiFiBTStatus;
+
     private Printer mPrinter = null;
 
-    private AppPreferences mPreferences;
+    private ProgressDialog mProgressDialog;
 
-    private Button mButton;
+    private Calendar mCalendar;
+
+    private SimpleDateFormat mSimpleDateFormat;
+
+    private String mTimeStamp, mDate, mTime;
+
+    private String[] mTimeStampTemp;
+
+    private String mSno, mQty;
+
+    private TextView mTextSno, mTextQty, mTextKot;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_print_daily_count);
 
         mContext = this;
-        mPreferences = new AppPreferences();
 
-        mButton = (Button) findViewById(R.id.btn_save);
-
-        int[] target = {
-                R.id.btnDiscovery,
-                R.id.btnSampleReceipt,
-                R.id.btnSampleCoupon
-        };
-
-        for (int i = 0; i < target.length; i++) {
-            Button button = (Button) findViewById(target[i]);
-            button.setOnClickListener(this);
+        if (getIntent().getExtras() != null) {
+            mSno = getIntent().getExtras().getString("SNO");
+            mQty = getIntent().getExtras().getString("QTY");
         }
 
-        mEditTarget = (EditText) findViewById(R.id.edtTarget);
+        mWiFiBTStatus = new WiFiBTStatus();
 
-        mSpnSeries = (Spinner) findViewById(R.id.spnModel);
-        ArrayAdapter<SpnModels> seriesAdapter = new ArrayAdapter<SpnModels>(this, android.R.layout.simple_spinner_item);
-        seriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_m10), Printer.TM_M10));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_m30), Printer.TM_M30));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_p20), Printer.TM_P20));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_p60), Printer.TM_P60));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_p60ii), Printer.TM_P60II));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_p80), Printer.TM_P80));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t20), Printer.TM_T20));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t60), Printer.TM_T60));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t70), Printer.TM_T70));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t81), Printer.TM_T81));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t82), Printer.TM_T82));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t83), Printer.TM_T83));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t88), Printer.TM_T88));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t90), Printer.TM_T90));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_t90kp), Printer.TM_T90KP));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_u220), Printer.TM_U220));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_u330), Printer.TM_U330));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_l90), Printer.TM_L90));
-        seriesAdapter.add(new SpnModels(getString(R.string.printerseries_h6000), Printer.TM_H6000));
-        mSpnSeries.setAdapter(seriesAdapter);
-        mSpnSeries.setSelection(0);
+        mPrintToken = (Button) findViewById(R.id.btnprint);
 
-        mSpnLang = (Spinner) findViewById(R.id.spnLang);
-        ArrayAdapter<SpnModels> langAdapter = new ArrayAdapter<SpnModels>(this, android.R.layout.simple_spinner_item);
-        langAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        langAdapter.add(new SpnModels(getString(R.string.lang_ank), Printer.MODEL_ANK));
-        langAdapter.add(new SpnModels(getString(R.string.lang_japanese), Printer.MODEL_JAPANESE));
-        langAdapter.add(new SpnModels(getString(R.string.lang_chinese), Printer.MODEL_CHINESE));
-        langAdapter.add(new SpnModels(getString(R.string.lang_taiwan), Printer.MODEL_TAIWAN));
-        langAdapter.add(new SpnModels(getString(R.string.lang_korean), Printer.MODEL_KOREAN));
-        langAdapter.add(new SpnModels(getString(R.string.lang_thai), Printer.MODEL_THAI));
-        langAdapter.add(new SpnModels(getString(R.string.lang_southasia), Printer.MODEL_SOUTHASIA));
-        mSpnLang.setAdapter(langAdapter);
-        mSpnLang.setSelection(0);
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage("Printing");
 
-        try {
-            Log.setLogSettings(mContext, Log.PERIOD_TEMPORARY, Log.OUTPUT_STORAGE, null, 0, 1, Log.LOGLEVEL_LOW);
-        } catch (Exception e) {
-            ShowMsg.showException(e, "setLogSettings", mContext);
-        }
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+        mCalendar = Calendar.getInstance();
 
-        mSpnSeries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPreferences.setPrinterModel(((SpnModels) mSpnSeries.getSelectedItem()).getModelConstant());
-            }
+        mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        mTextSno = (TextView) findViewById(R.id.text_sno);
+        mTextSno.setText(mSno);
 
-            }
-        });
+        mTextQty = (TextView) findViewById(R.id.text_qty);
+        mTextQty.setText(mQty);
 
-        mSpnLang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPreferences.setPrinterLang(((SpnModels) mSpnLang.getSelectedItem()).getModelConstant());
-            }
+        mTextKot = (TextView) findViewById(R.id.text_kot);
+        mTextKot.setText("(KOT) - " + mQty);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+        mTimeStampTemp = mTimeStamp.split(" ");
+        mDate = mTimeStampTemp[0];
+        mTime = mTimeStampTemp[1];
 
-            }
-        });
-
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mPrintToken.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+
+                if (mWiFiBTStatus.isBluetoothAvailable()) {
+
+                    mPrintToken.setEnabled(false);
+                    mProgressDialog.show();
+
+                    runPrintReceiptSequence();
+
+                } else {
+                    ShowMsg.showMsg("Enabling Bluetooth", mContext);
+                    mWiFiBTStatus.SetBluetoothStatus(true);
+                }
             }
         });
-
-        /**
-         * Set Old Values
-         */
-        mEditTarget.setText(mPreferences.getPrinterTarget());
-        mSpnSeries.setSelection(mPreferences.getPrinterModel());
-        mSpnLang.setSelection(mPreferences.getPrinterLang());
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, final int resultCode, final Intent data) {
-        if (data != null && resultCode == RESULT_OK) {
-            String target = data.getStringExtra(getString(R.string.title_target));
-
-            if (target != null) {
-
-                mPreferences.setPrinterTarget(target);
-                ((EditText) findViewById(R.id.edtTarget)).setText(target);
-            }
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = null;
-
-        switch (v.getId()) {
-            case R.id.btnDiscovery:
-
-                intent = new Intent(this, DiscoveryActivity.class);
-                startActivityForResult(intent, 0);
-                break;
-
-            case R.id.btnSampleReceipt:
-                updateButtonState(false);
-                if (!runPrintReceiptSequence()) {
-                    updateButtonState(true);
-                }
-                break;
-
-            default:
-                // Do nothing
-                break;
-        }
     }
 
     public boolean runPrintReceiptSequence() {
+
         if (!initializeObject()) {
             return false;
         }
@@ -229,13 +166,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             method = "addTextSize";
             mPrinter.addTextSize(2, 2);
             method = "addText";
-            mPrinter.addText("SHREE \n");
+            mPrinter.addText("srisaravanabhavan \n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(2, 2);
-
-            method = "addText";
-            mPrinter.addText("SRISARAVANAHAVAN \n");
+//            method = "addTextSize";
+//            mPrinter.addTextSize(2, 2);
+//
+//            method = "addText";
+//            mPrinter.addText("SRISARAVANAHAVAN \n");
 
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
@@ -244,7 +181,19 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             mPrinter.addTextSize(1, 1);
 
             method = "addText";
-            mPrinter.addText("\"" + "classic" + "\" \n");
+            mPrinter.addText("(High Class Veg Restaurant) \n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+
+            method = "addText";
+            mPrinter.addText("Hotel City View, Opp New Bus Stand, \n");
+
+//            method = "addTextSize";
+//            mPrinter.addTextSize(1, 1);
+//
+//            method = "addText";
+//            mPrinter.addText("Opp New Bus Stand, \n");
 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
@@ -255,6 +204,11 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
 
+            method = "addText";
+            mPrinter.addText("Ph: 0427-2433702 \n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
             textData.append(".........................................\n");
 
             method = "addText";
@@ -266,8 +220,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
+
             method = "addText";
-            mPrinter.addText("Full Meals       - KOT " + " COUNT " + " \n");
+            mPrinter.addText("Token By               Date : " + mDate + "\n");
+
+            method = "addText";
+            mPrinter.addText(textData.toString());
+            textData.delete(0, textData.length());
 
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
@@ -275,7 +234,33 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
 
+            method = "addText";
+            mPrinter.addText(new AppPreferences().getName() + "             Time : " + mTime + "\n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
             textData.append(".........................................\n");
+
+            method = "addText";
+            mPrinter.addText("Sno           Item            Qty" + "\n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+
+            method = "addText";
+            mPrinter.addText(mSno + "       Lunch Token        " + mQty + "\n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+            textData.append(".........................................\n");
+
+            method = "addText";
+            mPrinter.addTextSize(2, 2);
+            mPrinter.addText(" (KOT) -  " + mQty + " \n");
+
+            method = "addFeedLine";
+            mPrinter.addFeedLine(1);
+
             method = "addText";
             mPrinter.addText(textData.toString());
             textData.delete(0, textData.length());
@@ -303,8 +288,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         }
 
         PrinterStatusInfo status = mPrinter.getStatus();
-
-        dispPrinterWarnings(status);
 
         if (!isPrintable(status)) {
             ShowMsg.showMsg(makeErrorMessage(status), mContext);
@@ -335,8 +318,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         try {
 
-            if (mPreferences.getPrinterModel() != -1 && mPreferences.getPrinterLang() != -1) {
-                mPrinter = new Printer(mPreferences.getPrinterModel(), mPreferences.getPrinterLang(),
+            if (new AppPreferences().getPrinterModel() != -1 && new AppPreferences().getPrinterLang() != -1) {
+                mPrinter = new Printer(new AppPreferences().getPrinterModel(), new AppPreferences().getPrinterLang(),
                         mContext);
             }
 
@@ -370,7 +353,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         }
 
         try {
-            mPrinter.connect(mEditTarget.getText().toString(), Printer.PARAM_DEFAULT);
+            mPrinter.connect(new AppPreferences().getPrinterTarget(), Printer.PARAM_DEFAULT);
         } catch (Exception e) {
             ShowMsg.showException(e, "connect", mContext);
             return false;
@@ -490,42 +473,15 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         return msg;
     }
 
-    private void dispPrinterWarnings(PrinterStatusInfo status) {
-        EditText edtWarnings = (EditText) findViewById(R.id.edtWarnings);
-        String warningsMsg = "";
-
-        if (status == null) {
-            return;
-        }
-
-        if (status.getPaper() == Printer.PAPER_NEAR_END) {
-            warningsMsg += getString(R.string.handlingmsg_warn_receipt_near_end);
-        }
-
-        if (status.getBatteryLevel() == Printer.BATTERY_LEVEL_1) {
-            warningsMsg += getString(R.string.handlingmsg_warn_battery_near_end);
-        }
-
-        edtWarnings.setText(warningsMsg);
-    }
-
-    private void updateButtonState(boolean state) {
-        Button btnReceipt = (Button) findViewById(R.id.btnSampleReceipt);
-        Button btnCoupon = (Button) findViewById(R.id.btnSampleCoupon);
-        btnReceipt.setEnabled(state);
-        btnCoupon.setEnabled(state);
-    }
-
     @Override
     public void onPtrReceive(final Printer printerObj, final int code, final PrinterStatusInfo status, final String printJobId) {
+
         runOnUiThread(new Runnable() {
             @Override
             public synchronized void run() {
-                ShowMsg.showResult(code, makeErrorMessage(status), mContext);
 
-                dispPrinterWarnings(status);
-
-                updateButtonState(true);
+                mProgressDialog.dismiss();
+                mPrintToken.setEnabled(true);
 
                 new Thread(new Runnable() {
                     @Override
@@ -533,6 +489,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                         disconnectPrinter();
                     }
                 }).start();
+
             }
         });
     }

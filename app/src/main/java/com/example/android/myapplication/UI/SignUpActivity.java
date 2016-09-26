@@ -74,7 +74,9 @@ public class SignUpActivity extends Activity {
                 mstrMobileNumber = msignupMobileNumber.getText().toString();
                 mTimeStamp = String.valueOf(new Timestamp(mDate.getTime()));
 
-                if (mstrName != null && mstrName.toString().length() != 0 && msignupMobileNumber.toString().length() != 0) {
+                if (mstrName != null && mstrName.toString().length() < 5 && msignupMobileNumber.toString().length() < 5) {
+                    Toast.makeText(SignUpActivity.this, " name & password must 6 character", Toast.LENGTH_SHORT).show();
+                } else if (mstrName != null && mstrName.toString().length() != 0 && msignupMobileNumber.toString().length() != 0) {
 
                     mHotelDatabase.InsertSingleUser(mstrName, mstrPaswd, mstrMobileNumber, mTimeStamp);
 
