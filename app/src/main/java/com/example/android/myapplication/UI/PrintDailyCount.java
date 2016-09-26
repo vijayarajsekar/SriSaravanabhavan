@@ -224,6 +224,16 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             method = "addText";
             mPrinter.addText("Token By               Date : " + mDate + "\n");
 
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+
+            method = "addText";
+            mPrinter.addText(new AppPreferences().getName() + "               Time : " + mTime + "\n");
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+            textData.append(".........................................\n");
+
             method = "addText";
             mPrinter.addText(textData.toString());
             textData.delete(0, textData.length());
@@ -235,14 +245,15 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.addTextSize(1, 1);
 
             method = "addText";
-            mPrinter.addText(new AppPreferences().getName() + "             Time : " + mTime + "\n");
+            mPrinter.addText("Sno              Item               Qty" + "\n");
 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
             textData.append(".........................................\n");
 
             method = "addText";
-            mPrinter.addText("Sno           Item            Qty" + "\n");
+            mPrinter.addText(textData.toString());
+            textData.delete(0, textData.length());
 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
@@ -250,20 +261,9 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             method = "addText";
             mPrinter.addText(mSno + "       Lunch Token        " + mQty + "\n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
-            textData.append(".........................................\n");
-
             method = "addText";
             mPrinter.addTextSize(2, 2);
             mPrinter.addText(" (KOT) -  " + mQty + " \n");
-
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
-
-            method = "addText";
-            mPrinter.addText(textData.toString());
-            textData.delete(0, textData.length());
 
             method = "addFeedLine";
             mPrinter.addFeedLine(2);

@@ -70,6 +70,18 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
         calendar = Calendar.getInstance();
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+        try {
+
+            mFromDate.setText(mSimpleDateFormat.format(calendar.getTime()));
+            mCompareDate1 = mSimpleDateFormat.parse(mSimpleDateFormat.format(calendar.getTime()));
+
+            mToDate.setText(mSimpleDateFormat.format(calendar.getTime()));
+            mCompareDate2 = mSimpleDateFormat.parse(mSimpleDateFormat.format(calendar.getTime()));
+
+        } catch (Exception ex) {
+            Log.v(TAG, ex.toString());
+        }
+
 //        for (int x = 1; x < 10; x++) {
 //
 ////            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
@@ -87,7 +99,6 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
         mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10));
         mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10));
         mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10));
-
 
 //
 //        mDataList = mHotelDatabase.GetAllCounts();

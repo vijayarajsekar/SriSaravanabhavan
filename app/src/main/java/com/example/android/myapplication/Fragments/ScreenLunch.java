@@ -59,7 +59,6 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
     private java.util.Date mDate;
 
-    private String mTotalCountDb;
 
     @Nullable
     @Override
@@ -222,8 +221,6 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
             method = "addText";
             mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
-
-            mTotalCountDb = String.valueOf(mPreferences.getPrintCount());
 
             method = "addFeedLine";
             mPrinter.addFeedLine(1);
@@ -469,9 +466,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                             mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
                             mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
 
-                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + mTotalCountDb);
-
-                            System.out.println(" ~  ~ ~ ~ 11111 " + mTotalCountDb);
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
 
                             runPrintReceiptSequence();
                         }
@@ -486,8 +481,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                     mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 
-                    mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + mTotalCountDb);
-                    System.out.println(" ~  ~ ~ ~ 22222 " + mTotalCountDb);
+                    mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
 
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
 
