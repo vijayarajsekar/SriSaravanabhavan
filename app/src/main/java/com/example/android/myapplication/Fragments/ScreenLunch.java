@@ -90,12 +90,20 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                 if (mWiFiBTStatus.isBluetoothAvailable()) {
 
-                    mPrintToken.setEnabled(false);
-                    mProgressDialog.show();
-                    mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+                    if (new AppPreferences().getPrinterModel() != -1) {
 
-                    mPrintCount = 1;
-                    runPrintReceiptSequence();
+                        mPrintToken.setEnabled(false);
+                        mProgressDialog.show();
+                        mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+
+                        mPrintCount = 1;
+
+                        runPrintReceiptSequence();
+
+                    } else {
+                        ShowMsg.showMsg("Printer setting is not available.", mContext);
+                    }
+
                 } else {
                     ShowMsg.showMsg("Enabling Bluetooth", mContext);
                     mWiFiBTStatus.SetBluetoothStatus(true);
@@ -128,6 +136,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
     }
 
     private boolean createReceiptData() {
+
         String method = "";
         Bitmap logoData = BitmapFactory.decodeResource(getResources(), R.drawable.storre);
         StringBuilder textData = new StringBuilder();
@@ -139,103 +148,275 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
         }
 
         try {
-            method = "addTextAlign";
-            mPrinter.addTextAlign(Printer.ALIGN_CENTER);
 
-            method = "addImage";
-            mPrinter.addImage(logoData, 0, 0,
-                    logoData.getWidth(),
-                    logoData.getHeight(),
-                    Printer.COLOR_1,
-                    Printer.MODE_MONO,
-                    Printer.HALFTONE_DITHER,
-                    Printer.PARAM_DEFAULT,
-                    Printer.COMPRESS_NONE);
+            if (mPreferences.getPrintType() == 1) {
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
+                method = "addTextAlign";
+                mPrinter.addTextAlign(Printer.ALIGN_CENTER);
 
-            method = "addTextSize";
-            mPrinter.addTextSize(2, 2);
-            method = "addText";
-            mPrinter.addText("srisaravanabhavan \n");
+                method = "addImage";
+                mPrinter.addImage(logoData, 0, 0,
+                        logoData.getWidth(),
+                        logoData.getHeight(),
+                        Printer.COLOR_1,
+                        Printer.MODE_MONO,
+                        Printer.HALFTONE_DITHER,
+                        Printer.PARAM_DEFAULT,
+                        Printer.COMPRESS_NONE);
 
-//            method = "addTextSize";
-//            mPrinter.addTextSize(2, 2);
-//
-//            method = "addText";
-//            mPrinter.addText("SRISARAVANAHAVAN \n");
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
+                method = "addText";
+                mPrinter.addText("srisaravanabhavan \n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
 
-            method = "addText";
-            mPrinter.addText("(High Class Veg Restaurant) \n");
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addText";
+                mPrinter.addText("(High Class Veg Restaurant) \n");
 
-            method = "addText";
-            mPrinter.addText("Hotel City View, Opp New Bus Stand, \n");
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-//            method = "addTextSize";
-//            mPrinter.addTextSize(1, 1);
-//
-//            method = "addText";
-//            mPrinter.addText("Opp New Bus Stand, \n");
+                method = "addText";
+                mPrinter.addText("Hotel City View, Opp New Bus Stand, \n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-            method = "addText";
-            mPrinter.addText("Salem - 4 \n");
+                method = "addText";
+                mPrinter.addText("Salem - 4 \n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-            method = "addText";
-            mPrinter.addText("Ph: 0427-2433702 \n");
+                method = "addText";
+                mPrinter.addText("Ph: 0427-2433702 \n");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
-            textData.append(".........................................\n");
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+                textData.append(".........................................\n");
 
-            method = "addText";
-            mPrinter.addText(textData.toString());
-            textData.delete(0, textData.length());
+                method = "addText";
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-            method = "addText";
-            mPrinter.addText("Full Meals       - ");
+                method = "addText";
+                mPrinter.addText("Full Meals       - ");
 
-            method = "addTextSize";
-            mPrinter.addTextSize(2, 2);
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
 
-            method = "addText";
-            mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+                method = "addText";
+                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
 
-            method = "addTextSize";
-            mPrinter.addTextSize(1, 1);
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
 
-            textData.append(".........................................\n");
-            method = "addText";
-            mPrinter.addText(textData.toString());
-            textData.delete(0, textData.length());
+                textData.append(".........................................\n");
+                method = "addText";
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(2);
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
 
+                method = "addFeedLine";
+                mPrinter.addFeedLine(4);
+
+                // - - - - - - 2nd Print - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                // Setting The Count Sequence
+                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+
+                method = "addTextAlign";
+                mPrinter.addTextAlign(Printer.ALIGN_CENTER);
+
+                method = "addImage";
+                mPrinter.addImage(logoData, 0, 0,
+                        logoData.getWidth(),
+                        logoData.getHeight(),
+                        Printer.COLOR_1,
+                        Printer.MODE_MONO,
+                        Printer.HALFTONE_DITHER,
+                        Printer.PARAM_DEFAULT,
+                        Printer.COMPRESS_NONE);
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
+                method = "addText";
+                mPrinter.addText("srisaravanabhavan \n");
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("(High Class Veg Restaurant) \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Hotel City View, Opp New Bus Stand, \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Salem - 4 \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Ph: 0427-2433702 \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+                textData.append(".........................................\n");
+
+                method = "addText";
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Full Meals       - ");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
+
+                method = "addText";
+                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                textData.append(".........................................\n");
+                method = "addText";
+
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(4);
+
+            } else {
+
+                method = "addTextAlign";
+                mPrinter.addTextAlign(Printer.ALIGN_CENTER);
+
+                method = "addImage";
+                mPrinter.addImage(logoData, 0, 0,
+                        logoData.getWidth(),
+                        logoData.getHeight(),
+                        Printer.COLOR_1,
+                        Printer.MODE_MONO,
+                        Printer.HALFTONE_DITHER,
+                        Printer.PARAM_DEFAULT,
+                        Printer.COMPRESS_NONE);
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
+                method = "addText";
+                mPrinter.addText("srisaravanabhavan \n");
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("(High Class Veg Restaurant) \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Hotel City View, Opp New Bus Stand, \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Salem - 4 \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Ph: 0427-2433702 \n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+                textData.append(".........................................\n");
+
+                method = "addText";
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Full Meals       - ");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(2, 2);
+
+                method = "addText";
+                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(1);
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
+
+                textData.append(".........................................\n");
+                method = "addText";
+
+                mPrinter.addText(textData.toString());
+                textData.delete(0, textData.length());
+
+                method = "addFeedLine";
+                mPrinter.addFeedLine(4);
+
+            }
         } catch (Exception e) {
             ShowMsg.showException(e, method, mContext);
             return false;
@@ -447,37 +628,59 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             @Override
             public synchronized void run() {
 
-                if (mPrintCount == 1) {
+                if (mPreferences.getPrintType() == 2) {
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            disconnectPrinter();
-                        }
-                    }).start();
+                    if (mPrintCount == 1) {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                disconnectPrinter();
+                            }
+                        }).start();
 
-                            if (code == 0)
-                                mPrintCount = 2;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
 
-                            mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
-                            mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+                                if (code == 0)
+                                    mPrintCount = 2;
 
-                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
+                                mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
+                                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
 
-                            runPrintReceiptSequence();
-                        }
-                    }, 3000);
+//                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
 
-                    return;
-                }
+                                runPrintReceiptSequence();
+                            }
+                        }, 3000);
 
-                if (mPrintCount == 2) {
+                        return;
+                    }
+
+                    if (mPrintCount == 2) {
+                        mProgressDialog.dismiss();
+                        mPrintToken.setEnabled(true);
+
+                        mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
+
+                        mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
+
+//                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                disconnectPrinter();
+                            }
+                        }).start();
+                    }
+                } else {
+
                     mProgressDialog.dismiss();
                     mPrintToken.setEnabled(true);
+
+                    mPrintCount = 1;
 
                     mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 

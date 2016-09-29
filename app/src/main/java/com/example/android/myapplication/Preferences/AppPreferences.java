@@ -114,4 +114,13 @@ public class AppPreferences extends AppConstants {
         mEditor.putInt(PRIINT_COUNT, values);
         mEditor.commit();
     }
+
+    public int getPrintType() {
+        return mPreferences.getInt(PRIINT_TYPE, -1);
+    }
+
+    public void setPrintType(int values) {
+        mEditor.putInt(PRIINT_TYPE, values);
+        mEditor.commit();
+    }
 }

@@ -27,4 +27,6 @@ public class AppConstants {
     String PRIINTER_TARGET = "PrinterTarget";
 
     String PRIINT_COUNT = "PrintCount";
+
+    String PRIINT_TYPE = "PrintType";
 }

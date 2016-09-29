@@ -106,7 +106,11 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
                     mPrintToken.setEnabled(false);
                     mProgressDialog.show();
 
-                    runPrintReceiptSequence();
+                    if (new AppPreferences().getPrinterModel() != -1) {
+                        runPrintReceiptSequence();
+                    } else {
+                        ShowMsg.showMsg("Printer setting is not available.", mContext);
+                    }
 
                 } else {
                     ShowMsg.showMsg("Enabling Bluetooth", mContext);
@@ -238,8 +242,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.addText(textData.toString());
             textData.delete(0, textData.length());
 
-            method = "addFeedLine";
-            mPrinter.addFeedLine(1);
+//            method = "addFeedLine";
+//            mPrinter.addFeedLine(1);
 
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
@@ -258,15 +262,29 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             method = "addTextSize";
             mPrinter.addTextSize(1, 1);
 
+            method = "addFeedLine";
+            mPrinter.addFeedLine(1);
+
             method = "addText";
-            mPrinter.addText(mSno + "       Lunch Token        " + mQty + "\n");
+            mPrinter.addText(mSno + "           Lunch Token             " + mQty + "\n");
+
+            method = "addText";
+            mPrinter.addText(textData.toString());
+            textData.delete(0, textData.length());
+
+            method = "addFeedLine";
+            mPrinter.addFeedLine(3);
 
             method = "addText";
             mPrinter.addTextSize(2, 2);
             mPrinter.addText(" (KOT) -  " + mQty + " \n");
 
+            method = "addText";
+            mPrinter.addText(textData.toString());
+            textData.delete(0, textData.length());
+
             method = "addFeedLine";
-            mPrinter.addFeedLine(2);
+            mPrinter.addFeedLine(6);
 
         } catch (Exception e) {
             ShowMsg.showException(e, method, mContext);

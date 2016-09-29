@@ -71,10 +71,6 @@ public class MainActivity extends FragmentActivity {
     private AlertDialog.Builder builder;
     private AlertDialog mAlertDialog;
 
-    private List<UsersPojo> mUsersPojo;
-
-    private HotelDatabase mHotelDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +78,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         mContext = MainActivity.this;
-        mHotelDatabase = new HotelDatabase(mContext);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#1CA182")));
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -173,9 +168,9 @@ public class MainActivity extends FragmentActivity {
 
                         mStrPasscode = mPasscode.getText().toString();
 
-                        mUsersPojo = mHotelDatabase.GetSingleUser(new AppPreferences().getName(), mStrPasscode);
+                        String mTemp = "sri@" + new AppPreferences().getName();
 
-                        if (mStrPasscode != null && mUsersPojo.size() > 0) {
+                        if (mStrPasscode != null && mStrPasscode.equals(mTemp)) {
                             startActivity(new Intent(mContext, DailyReportActivity.class));
                         } else {
                             Toast.makeText(getApplicationContext(),

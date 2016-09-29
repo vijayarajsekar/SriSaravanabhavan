@@ -11,7 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.epson.epos2.Epos2Exception;
 import com.epson.epos2.Log;
@@ -32,6 +35,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     private Spinner mSpnLang = null;
     private Printer mPrinter = null;
 
+    private RadioGroup mRadioGroup;
+    private RadioButton mRadioType;
+
     private AppPreferences mPreferences;
 
     private Button mButton;
@@ -45,6 +51,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mPreferences = new AppPreferences();
 
         mButton = (Button) findViewById(R.id.btn_save);
+
+        mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         int[] target = {
                 R.id.btnDiscovery,
@@ -130,6 +138,21 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // get selected radio button from radioGroup
+                int selectedId = mRadioGroup.getCheckedRadioButtonId();
+
+                // find the radiobutton by returned id
+                mRadioType = (RadioButton) findViewById(selectedId);
+
+                if (mRadioType.getText().toString().equals("1")) {
+                    mPreferences.setPrintType(1);
+                } else {
+                    mPreferences.setPrintType(2);
+                }
+
+//                Toast.makeText(mContext, mRadioType.getText(), Toast.LENGTH_SHORT).show();
+
                 finish();
             }
         });
@@ -141,6 +164,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mSpnSeries.setSelection(mPreferences.getPrinterModel());
         mSpnLang.setSelection(mPreferences.getPrinterLang());
 
+        if (mPreferences.getPrintType() == 1) {
+            mRadioType = (RadioButton) findViewById(R.id.radio_one);
+            mRadioGroup.check(R.id.radio_one);
+        } else {
+            mRadioType = (RadioButton) findViewById(R.id.radio_one);
+            mRadioGroup.check(R.id.radio_two);
+        }
     }
 
     @Override

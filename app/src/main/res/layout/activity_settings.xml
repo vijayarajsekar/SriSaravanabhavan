@@ -93,15 +93,58 @@
             android:text="@string/btn_samplecoupon"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_printcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Printing Count"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000000" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/radio_one"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radio_two"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_warnings"
+            android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000000" />
 
         <EditText
+            android:visibility="gone"
             android:id="@+id/edtWarnings"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -115,6 +158,7 @@
             android:layout_height="45dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/search_bg"
             android:text="Save"
             android:textColor="@android:color/white"
