@@ -147,6 +147,8 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                         if (mDataList.size() != 0) {
                             mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
                             mListView.setAdapter(mTotalCountAdapter);
+                        } else {
+                            Toast.makeText(mContext, "No data available", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

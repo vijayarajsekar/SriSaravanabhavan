@@ -61,7 +61,7 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_print_daily_count);
 
         mContext = this;
