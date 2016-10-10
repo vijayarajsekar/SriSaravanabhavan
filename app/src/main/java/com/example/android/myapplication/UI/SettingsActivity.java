@@ -175,13 +175,21 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, final Intent data) {
+
         if (data != null && resultCode == RESULT_OK) {
+
             String target = data.getStringExtra(getString(R.string.title_target));
 
             if (target != null) {
 
                 mPreferences.setPrinterTarget(target);
-                ((EditText) findViewById(R.id.edtTarget)).setText(target);
+
+                if (mEditTarget != null)
+                    mEditTarget.setText(target);
+
+                if (mEditTarget != null && mEditTarget.toString().length() == 0) {
+                    mEditTarget.setText(mPreferences.getPrinterTarget());
+                }
             }
         }
     }

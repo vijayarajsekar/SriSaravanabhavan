@@ -170,7 +170,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
                 method = "addText";
-                mPrinter.addText("srisaravanabhavan \n");
+                mPrinter.addText("SRI SARAVANABHAVAN \n CLASSIC \n");
 
                 method = "addFeedLine";
                 mPrinter.addFeedLine(1);
@@ -261,7 +261,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
                 method = "addText";
-                mPrinter.addText("srisaravanabhavan \n");
+                mPrinter.addText("SRI SARAVANABHAVAN \n CLASSIC \n");
 
                 method = "addFeedLine";
                 mPrinter.addFeedLine(1);
@@ -349,7 +349,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
                 method = "addText";
-                mPrinter.addText("srisaravanabhavan \n");
+                mPrinter.addText("SRI SARAVANABHAVAN \n CLASSIC \n");
 
                 method = "addFeedLine";
                 mPrinter.addFeedLine(1);
