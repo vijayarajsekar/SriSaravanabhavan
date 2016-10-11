@@ -19,13 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Sri Saravanabhavan Classic"
-        android:maxLines="2"
+        android:text="Shree Saravanabhavan Classic"
+        android:maxLines="3"
         android:gravity="center_horizontal"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
 

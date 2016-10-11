@@ -170,7 +170,7 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             method = "addTextSize";
             mPrinter.addTextSize(2, 2);
             method = "addText";
-            mPrinter.addText("SRI SARAVANABHAVAN \n CLASSIC \n");
+            mPrinter.addText("SHREE SARAVANABHAVAN \n CLASSIC \n");
 
 //            method = "addTextSize";
 //            mPrinter.addTextSize(2, 2);
