@@ -108,7 +108,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                         mPrintToken.setEnabled(true);
                         mProgressDialog.dismiss();
-                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+//                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
                     }
 
                 } else {
@@ -116,7 +116,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                     mPrintToken.setEnabled(true);
                     mProgressDialog.dismiss();
-                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+//                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
 
                     mWiFiBTStatus.SetBluetoothStatus(true);
                 }
