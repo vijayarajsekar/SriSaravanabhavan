@@ -94,6 +94,9 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                         mPrintToken.setEnabled(false);
                         mProgressDialog.show();
+
+                        System.out.println(" - - YES 0 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
                         mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
 
                         mPrintCount = 1;
@@ -102,10 +105,19 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                     } else {
                         ShowMsg.showMsg("Printer setting is not available.", mContext);
+
+                        mPrintToken.setEnabled(true);
+                        mProgressDialog.dismiss();
+                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
                     }
 
                 } else {
                     ShowMsg.showMsg("Enabling Bluetooth", mContext);
+
+                    mPrintToken.setEnabled(true);
+                    mProgressDialog.dismiss();
+                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+
                     mWiFiBTStatus.SetBluetoothStatus(true);
                 }
             }
@@ -419,6 +431,14 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             }
         } catch (Exception e) {
             ShowMsg.showException(e, method, mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
             return false;
         }
 
@@ -440,6 +460,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
         if (!isPrintable(status)) {
             ShowMsg.showMsg(makeErrorMessage(status), mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+
             try {
                 mPrinter.disconnect();
             } catch (Exception ex) {
@@ -452,6 +477,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             mPrinter.sendData(Printer.PARAM_DEFAULT);
         } catch (Exception e) {
             ShowMsg.showException(e, "sendData", mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+            System.out.println(" - - YES 2 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
             try {
                 mPrinter.disconnect();
             } catch (Exception ex) {
@@ -474,6 +505,14 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
         } catch (Exception e) {
             ShowMsg.showException(e, "Printer", mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+
+            System.out.println(" - - YES 3 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
             return false;
         }
 
@@ -505,6 +544,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             mPrinter.connect(mPreferences.getPrinterTarget(), Printer.PARAM_DEFAULT);
         } catch (Exception e) {
             ShowMsg.showException(e, "connect", mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+            System.out.println(" - - YES 4 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
             return false;
         }
 
@@ -513,6 +559,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             isBeginTransaction = true;
         } catch (Exception e) {
             ShowMsg.showException(e, "beginTransaction", mContext);
+
+            mPrintToken.setEnabled(true);
+            mProgressDialog.dismiss();
+            System.out.println(" - - YES 5 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
         }
 
         if (isBeginTransaction == false) {
@@ -539,6 +592,14 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "endTransaction", mContext);
+
+                    mPrintToken.setEnabled(true);
+                    mProgressDialog.dismiss();
+
+                    System.out.println(" - - YES 6 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+
                 }
             });
         }
@@ -550,6 +611,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "disconnect", mContext);
+
+                    mPrintToken.setEnabled(true);
+                    mProgressDialog.dismiss();
+                    System.out.println(" - - YES 7 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+
+                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
                 }
             });
         }
