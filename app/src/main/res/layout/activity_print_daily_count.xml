@@ -7,19 +7,19 @@
     android:padding="15dp">
 
     <ImageView
-        android:layout_width="115dp"
-        android:layout_height="115dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="fitXY"
         android:src="@drawable/logo" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="Shree Saravanabhavan Classic"
         android:textAllCaps="true"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25sp" />
+        android:textSize="21sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text=". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." />
+        android:text=". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." />
+        android:text=". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -110,11 +110,15 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
                         runPrintReceiptSequence();
                     } else {
                         ShowMsg.showMsg("Printer setting is not available.", mContext);
+                        mProgressDialog.dismiss();
+                        mPrintToken.setEnabled(true);
                     }
 
                 } else {
                     ShowMsg.showMsg("Enabling Bluetooth", mContext);
                     mWiFiBTStatus.SetBluetoothStatus(true);
+                    mProgressDialog.dismiss();
+                    mPrintToken.setEnabled(true);
                 }
             }
         });
@@ -288,6 +292,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
         } catch (Exception e) {
             ShowMsg.showException(e, method, mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
             return false;
         }
 
@@ -309,6 +315,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
         if (!isPrintable(status)) {
             ShowMsg.showMsg(makeErrorMessage(status), mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
             try {
                 mPrinter.disconnect();
             } catch (Exception ex) {
@@ -321,6 +329,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.sendData(Printer.PARAM_DEFAULT);
         } catch (Exception e) {
             ShowMsg.showException(e, "sendData", mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
             try {
                 mPrinter.disconnect();
             } catch (Exception ex) {
@@ -343,6 +353,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
         } catch (Exception e) {
             ShowMsg.showException(e, "Printer", mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
             return false;
         }
 
@@ -374,6 +386,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.connect(new AppPreferences().getPrinterTarget(), Printer.PARAM_DEFAULT);
         } catch (Exception e) {
             ShowMsg.showException(e, "connect", mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
             return false;
         }
 
@@ -382,6 +396,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             isBeginTransaction = true;
         } catch (Exception e) {
             ShowMsg.showException(e, "beginTransaction", mContext);
+            mProgressDialog.dismiss();
+            mPrintToken.setEnabled(true);
         }
 
         if (isBeginTransaction == false) {
@@ -408,6 +424,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "endTransaction", mContext);
+                    mProgressDialog.dismiss();
+                    mPrintToken.setEnabled(true);
                 }
             });
         }
@@ -419,6 +437,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
                 @Override
                 public synchronized void run() {
                     ShowMsg.showException(e, "disconnect", mContext);
+                    mProgressDialog.dismiss();
+                    mPrintToken.setEnabled(true);
                 }
             });
         }
