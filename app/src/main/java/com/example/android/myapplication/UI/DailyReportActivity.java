@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
@@ -48,6 +50,11 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
 
     private HotelDatabase mHotelDatabase;
 
+    private RadioGroup mRadioGroup;
+    private RadioButton mRadioType;
+
+    private String mFoodType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +64,8 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
         mContext = this;
 
         mHotelDatabase = new HotelDatabase(mContext);
+
+        mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         mFromDate = (EditText) findViewById(R.id.date_from);
         mToDate = (EditText) findViewById(R.id.date_to);
@@ -89,16 +98,16 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
 //            mHotelDatabase.InsertRecord("User " + x, "2016-" + "0" + x + "-01", String.valueOf(x * 10));
 //        }
 
-        mHotelDatabase.InsertRecord("User " + 1, "2016-" + "0" + 1 + "-01", String.valueOf(99 * 10));
-        mHotelDatabase.InsertRecord("User " + 2, "2016-" + "0" + 2 + "-01", String.valueOf(9 * 10));
-        mHotelDatabase.InsertRecord("User " + 3, "2016-" + "0" + 2 + "-01", String.valueOf(8 * 10));
-        mHotelDatabase.InsertRecord("User " + 4, "2016-" + "0" + 2 + "-01", String.valueOf(7 * 10));
-        mHotelDatabase.InsertRecord("User " + 5, "2016-" + "0" + 5 + "-01", String.valueOf(5 * 10));
-        mHotelDatabase.InsertRecord("User " + 6, "2016-" + "0" + 6 + "-01", String.valueOf(1 * 10));
-        mHotelDatabase.InsertRecord("User " + 7, "2016-" + "0" + 7 + "-01", String.valueOf(2 * 10));
-        mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10));
-        mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10));
-        mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10));
+        mHotelDatabase.InsertRecord("User " + 1, "2016-" + "0" + 1 + "-01", String.valueOf(99 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 2, "2016-" + "0" + 2 + "-01", String.valueOf(9 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 3, "2016-" + "0" + 2 + "-01", String.valueOf(8 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 4, "2016-" + "0" + 2 + "-01", String.valueOf(7 * 10), "P");
+        mHotelDatabase.InsertRecord("User " + 5, "2016-" + "0" + 5 + "-01", String.valueOf(5 * 10), "P");
+        mHotelDatabase.InsertRecord("User " + 6, "2016-" + "0" + 6 + "-01", String.valueOf(1 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 7, "2016-" + "0" + 7 + "-01", String.valueOf(2 * 10), "P");
+        mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "L");
+        mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "P");
 
 //
 //        mDataList = mHotelDatabase.GetAllCounts();
@@ -142,12 +151,25 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                         Toast.makeText(mContext, "To Date is Greater Than Today", Toast.LENGTH_SHORT).show();
                     } else {
 
-                        mDataList = mHotelDatabase.GetAllCountDateWise(mFromDate.getText().toString(), mToDate.getText().toString());
+                        // get selected radio button from radioGroup
+                        int selectedId = mRadioGroup.getCheckedRadioButtonId();
+
+                        // find the radiobutton by returned id
+                        mRadioType = (RadioButton) findViewById(selectedId);
+
+                        if (mRadioType.getText().toString().equals("Lunch")) {
+                            mFoodType = "L";
+                        } else {
+                            mFoodType = "P";
+                        }
+
+                        mDataList = mHotelDatabase.GetAllCountDateWise(mFromDate.getText().toString(), mToDate.getText().toString(), mFoodType);
 
                         if (mDataList.size() != 0) {
                             mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
                             mListView.setAdapter(mTotalCountAdapter);
                         } else {
+                            mListView.setAdapter(null);
                             Toast.makeText(mContext, "No data available", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -164,6 +186,7 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                 Intent mIntent = new Intent(mContext, PrintDailyCount.class);
                 mIntent.putExtra("SNO", "" + mpos);
                 mIntent.putExtra("QTY", mDataList.get(pos).getTotalCount());
+                mIntent.putExtra("TYPE", mFoodType);
                 startActivity(mIntent);
 //                mDataList
 

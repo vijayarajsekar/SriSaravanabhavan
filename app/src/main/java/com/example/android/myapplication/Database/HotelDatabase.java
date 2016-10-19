@@ -43,7 +43,7 @@ public class HotelDatabase implements HotelDbConstants {
      * @param count
      */
 
-    public void InsertRecord(String uname, String date, String count) {
+    public void InsertRecord(String uname, String date, String count, String foodtype) {
 
         try {
 
@@ -54,6 +54,7 @@ public class HotelDatabase implements HotelDbConstants {
             mValues.put(NAME, uname);
             mValues.put(PRINT_DATE, date);
             mValues.put(COUNT_NUMBER, count);
+            mValues.put(FOOD_TYPE, foodtype);
 
             mSQLiteDatabase.insert(TABLE_HOTEL, null, mValues);
 
@@ -99,11 +100,13 @@ public class HotelDatabase implements HotelDbConstants {
     /**
      * @return All The Available Data List - DateWise
      */
-    public List<PrintPojo> GetAllCountDateWise(String _fromDate, String _toDate) {
+    public List<PrintPojo> GetAllCountDateWise(String _fromDate, String _toDate, String _foodType) {
 
-        String mQueryTemp = SELECT_ALL_COUNT_DATE_WISE.replace("$from", _fromDate);
+        String mQueryTemp1 = SELECT_ALL_COUNT_DATE_WISE.replace("$from", _fromDate);
 
-        String mQuery = mQueryTemp.replace("$to", _toDate);
+        String mQueryTemp2 = mQueryTemp1.replace("$to", _toDate);
+
+        String mQuery = mQueryTemp2.replace("$type", _foodType);
 
         List<PrintPojo> contactList = new ArrayList<PrintPojo>();
 

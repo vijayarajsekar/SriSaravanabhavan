@@ -57,10 +57,12 @@ public class MainActivity extends FragmentActivity {
     private ViewPager pager;
     private PagerAdapter mPagerAdapter;
 
+    private AppPreferences mPreferences;
+
     private Context mContext;
 
     private LinearLayout mSideMenuView;
-    private TextView mItem1, mItem2, mItem3;
+    private TextView mItem1, mItem2, mItem3, mItem4;
 
     private boolean mIsVisible = false;
 
@@ -86,12 +88,15 @@ public class MainActivity extends FragmentActivity {
 
         mSideMenuView = (LinearLayout) findViewById(R.id.menuview);
 
+        mPreferences = new AppPreferences();
+
         mAnimationIn = AnimationUtils.loadAnimation(mContext, R.anim.go_right_in);
         mAnimationOut = AnimationUtils.loadAnimation(mContext, R.anim.go_right_out);
 
         mItem1 = (TextView) findViewById(R.id.menuview_item1);
         mItem2 = (TextView) findViewById(R.id.menuview_item2);
         mItem3 = (TextView) findViewById(R.id.menuview_item3);
+        mItem4 = (TextView) findViewById(R.id.menuview_item4);
 
         pager.setAdapter(mPagerAdapter);
 
@@ -172,6 +177,60 @@ public class MainActivity extends FragmentActivity {
 
                         if (mStrPasscode != null && mStrPasscode.equals(mTemp)) {
                             startActivity(new Intent(mContext, DailyReportActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Invalid Password!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                mAlertDialog.show();
+            }
+        });
+
+        mItem4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mSideMenuView.setVisibility(View.GONE);
+                mSideMenuView.startAnimation(mAnimationOut);
+                mIsVisible = false;
+
+                final EditText mPasscode;
+                LinearLayout.LayoutParams mLayoutParams = null;
+
+                mPasscode = new EditText(mContext);
+                mPasscode.setHint(R.string.passcode);
+                mPasscode.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+                mPasscode.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                mLayoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                mPasscode.setLayoutParams(mLayoutParams);
+
+                builder = new AlertDialog.Builder(mContext, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Count Reset");
+                builder.setView(mPasscode, 50, 50, 50, 50);
+                builder.setCancelable(false);
+
+                mAlertDialog = builder.create();
+
+                mAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mStrPasscode = mPasscode.getText().toString();
+
+                        String mTemp = "sri@" + new AppPreferences().getName();
+
+                        if (mStrPasscode != null && mStrPasscode.equals(mTemp)) {
+
+                            mPreferences.setPrintCount(0);
+                            mPreferences.setPrintParcelCount(0);
+
+                            Toast.makeText(mContext, "Count reset done", Toast.LENGTH_SHORT).show();
+
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "Invalid Password!", Toast.LENGTH_SHORT).show();

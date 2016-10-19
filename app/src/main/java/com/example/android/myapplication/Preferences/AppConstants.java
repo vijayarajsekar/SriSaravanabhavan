@@ -28,5 +28,7 @@ public class AppConstants {
 
     String PRIINT_COUNT = "PrintCount";
 
+    String PRIINT_PARCEL_COUNT = "PrintParcelCount";
+
     String PRIINT_TYPE = "PrintType";
 }

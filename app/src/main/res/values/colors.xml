@@ -14,4 +14,6 @@
 
     <color name="btn_bg">#ECEEF1</color>
 
+    <color name="btn_reset_bg">#E04F5F</color>
+
 </resources>

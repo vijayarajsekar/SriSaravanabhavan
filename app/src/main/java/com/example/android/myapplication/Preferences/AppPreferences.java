@@ -115,6 +115,15 @@ public class AppPreferences extends AppConstants {
         mEditor.commit();
     }
 
+    public int getPrintParcelCount() {
+        return mPreferences.getInt(PRIINT_PARCEL_COUNT, 0);
+    }
+
+    public void setPrintParcelCount(int values) {
+        mEditor.putInt(PRIINT_PARCEL_COUNT, values);
+        mEditor.commit();
+    }
+
     public int getPrintType() {
         return mPreferences.getInt(PRIINT_TYPE, -1);
     }

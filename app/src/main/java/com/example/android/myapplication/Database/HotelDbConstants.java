@@ -20,11 +20,14 @@ public interface HotelDbConstants {
     public static final String PRINT_DATE = "PrintDate";
     public static final String COUNT_NUMBER = "CountNumber";
 
+    public static final String FOOD_TYPE = "FoodType";
+
     public String CREATE_HOTEL_TABLE = "create table " + TABLE_HOTEL + "("
             + ID + " INTEGER primary key autoincrement,"
             + NAME + " TEXT not null,"
             + PRINT_DATE + " DATETIME not null,"
-            + COUNT_NUMBER + " TEXT not null);";
+            + COUNT_NUMBER + " DATETIME not null,"
+            + FOOD_TYPE + " TEXT not null);";
 
     public String CREATE_USERS_TABLE = "create table " + TABLE_USERS + "("
             + ID + " INTEGER primary key autoincrement,"
@@ -40,6 +43,6 @@ public interface HotelDbConstants {
     public String SELECT_SINGLE_USER_DETAILS = "SELECT  * FROM " + TABLE_USERS + " WHERE " + NAME + " = " + "'$name' AND " + PASSWORD + " = " + "'$pass'";
 
     // Select All The Data From The Local Database
-    public String SELECT_ALL_COUNT_DATE_WISE = "SELECT " + ID + "," + PRINT_DATE + ", sum(CountNumber) as TotalCount FROM " + TABLE_HOTEL + " WHERE " + PRINT_DATE + " BETWEEN " + "'$from' AND " + "'$to'  GROUP BY " + PRINT_DATE;
+    public String SELECT_ALL_COUNT_DATE_WISE = "SELECT " + ID + "," + PRINT_DATE + ", sum(CountNumber) as TotalCount FROM " + TABLE_HOTEL + " WHERE ( " + PRINT_DATE + " BETWEEN " + "'$from' AND " + "'$to') AND FoodType IN ('$type') GROUP BY " + PRINT_DATE;
 
 }

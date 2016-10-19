@@ -66,6 +66,7 @@
     <string name="sidemenu_1">Printer Config</string>
     <string name="sidemenu_2">User Settings</string>
     <string name="sidemenu_3">Admin Reports</string>
+    <string name="sidemenu_4">Reset Count</string>
 
     <string name="passcode">Enter Password</string>
 

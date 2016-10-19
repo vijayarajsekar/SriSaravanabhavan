@@ -37,7 +37,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
     private View mRootView;
     private Context mContext;
 
-    private Button mPrintToken;
+    private Button mPrintToken, mPrintParcelToken;
 
     private WiFiBTStatus mWiFiBTStatus;
 
@@ -49,15 +49,21 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
     private int mPrintCount = 0;
 
+    private boolean mIsParcel = false;
+
     private HotelDatabase mHotelDatabase;
 
     private Calendar mCalendar;
 
-    private SimpleDateFormat mSimpleDateFormat;
+    private SimpleDateFormat mSimpleDateFormat, mSimpleDateFormat1;
 
-    private String mTimeStamp;
+    private String mTimeStamp, mTimeStamp1;
+
+    private String[] mTimeStampTemp;
 
     private java.util.Date mDate;
+
+    private String Date1, mTime;
 
 
     @Nullable
@@ -77,8 +83,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
         mDate = new java.util.Date();
 
         mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        mSimpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+
         mCalendar = Calendar.getInstance();
         mPrintToken = (Button) mRootView.findViewById(R.id.btn_token);
+        mPrintParcelToken = (Button) mRootView.findViewById(R.id.btn_parcel);
 
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setIndeterminate(true);
@@ -88,16 +97,99 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             @Override
             public void onClick(View view) {
 
+//                System.out.println("DATE - - - > " + Date1 + "TIME - - - > " + mTime);
+
+                mCalendar = Calendar.getInstance();
+                mTimeStamp1 = mSimpleDateFormat1.format(mCalendar.getTime());
+
+                mTimeStampTemp = mTimeStamp1.split(" ");
+                Date1 = mTimeStampTemp[0];
+                mTime = mTimeStampTemp[1];
+
+                System.out.println(" - - DATE - - " + Date1 + " - - TIME - - " + mTime);
+
+//                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+//                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() + 1);
+//
+//                System.out.println(" - - TOK - - " + mPreferences.getPrintCount() + " - - PAR - - " + mPreferences.getPrintParcelCount());
+
                 if (mWiFiBTStatus.isBluetoothAvailable()) {
 
                     if (new AppPreferences().getPrinterModel() != -1) {
 
+//                        mCalendar = Calendar.getInstance();
+//                        mTimeStamp1 = mSimpleDateFormat1.format(mCalendar.getTime());
+//
+//                        mTimeStampTemp = mTimeStamp1.split(" ");
+//                        Date1 = mTimeStampTemp[0];
+//                        mTime = mTimeStampTemp[1];
+
+                        mIsParcel = false;
                         mPrintToken.setEnabled(false);
                         mProgressDialog.show();
 
                         System.out.println(" - - YES 0 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
 
                         mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+
+                        mPrintCount = 1;
+
+                        runPrintReceiptSequence();
+
+                    } else {
+                        ShowMsg.showMsg("Printer setting is not available.", mContext);
+
+                        mPrintToken.setEnabled(true);
+                        mProgressDialog.dismiss();
+//                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+                    }
+
+                } else {
+                    ShowMsg.showMsg("Enabling Bluetooth", mContext);
+
+                    mPrintToken.setEnabled(true);
+                    mProgressDialog.dismiss();
+//                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+
+                    mWiFiBTStatus.SetBluetoothStatus(true);
+                }
+            }
+        });
+
+        mPrintParcelToken.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mCalendar = Calendar.getInstance();
+                mTimeStamp1 = mSimpleDateFormat1.format(mCalendar.getTime());
+
+                mTimeStampTemp = mTimeStamp1.split(" ");
+                Date1 = mTimeStampTemp[0];
+                mTime = mTimeStampTemp[1];
+
+                System.out.println(" - - DATE - - " + Date1 + " - - TIME - - " + mTime);
+
+                if (mWiFiBTStatus.isBluetoothAvailable()) {
+
+                    if (new AppPreferences().getPrinterModel() != -1) {
+
+//                        mCalendar = Calendar.getInstance();
+//
+//                        mTimeStamp1 = mSimpleDateFormat1.format(mCalendar.getTime());
+//
+//                        mTimeStampTemp = mTimeStamp1.split(" ");
+//                        Date1 = mTimeStampTemp[0];
+//                        mTime = mTimeStampTemp[1];
+//
+//                        System.out.println(" - - DATE - - " + Date1 + " - - TIME - - " + mTime);
+
+                        mIsParcel = true;
+                        mPrintToken.setEnabled(false);
+                        mProgressDialog.show();
+
+                        System.out.println(" - - YES 0 - - " + String.valueOf(mPreferences.getPrintParcelCount() - 2) + " - - NO - - " + mPreferences.getPrintParcelCount());
+
+                        mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() + 1);
 
                         mPrintCount = 1;
 
@@ -213,6 +305,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Date :" + Date1 + " Time : " + mTime + "\n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
                 textData.append(".........................................\n");
 
                 method = "addText";
@@ -226,13 +324,23 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 mPrinter.addTextSize(1, 1);
 
                 method = "addText";
-                mPrinter.addText("Full Meals       - ");
+
+                if (mIsParcel) {
+                    mPrinter.addText("Parcel Meals       - ");
+                } else {
+                    mPrinter.addText("Full Meals       - ");
+                }
 
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
 
                 method = "addText";
-                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+
+                if (mIsParcel) {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintParcelCount()) + " \n");
+                } else {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+                }
 
                 method = "addFeedLine";
                 mPrinter.addFeedLine(1);
@@ -252,7 +360,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 // - - - - - - 2nd Print - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // Setting The Count Sequence
-                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+                //  mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
 
                 method = "addTextAlign";
                 mPrinter.addTextAlign(Printer.ALIGN_CENTER);
@@ -304,6 +412,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Date :" + Date1 + " Time : " + mTime + "\n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
                 textData.append(".........................................\n");
 
                 method = "addText";
@@ -316,17 +430,22 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
 
-                method = "addText";
-                mPrinter.addText("Full Meals       - ");
+                if (mIsParcel) {
+                    mPrinter.addText("Parcel Meals      - ");
+                } else {
+                    mPrinter.addText("Full Meals       - ");
+                }
 
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
 
                 method = "addText";
-                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
 
-                method = "addFeedLine";
-                mPrinter.addFeedLine(1);
+                if (mIsParcel) {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintParcelCount()) + " \n");
+                } else {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+                }
 
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
@@ -392,6 +511,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
+
+                method = "addText";
+                mPrinter.addText("Date :" + Date1 + " Time : " + mTime + "\n");
+
+                method = "addTextSize";
+                mPrinter.addTextSize(1, 1);
                 textData.append(".........................................\n");
 
                 method = "addText";
@@ -404,14 +529,22 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                 method = "addTextSize";
                 mPrinter.addTextSize(1, 1);
 
-                method = "addText";
-                mPrinter.addText("Full Meals       - ");
+                if (mIsParcel) {
+                    mPrinter.addText("Parcel Meals      - ");
+                } else {
+                    mPrinter.addText("Full Meals       - ");
+                }
 
                 method = "addTextSize";
                 mPrinter.addTextSize(2, 2);
 
                 method = "addText";
-                mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+
+                if (mIsParcel) {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintParcelCount()) + " \n");
+                } else {
+                    mPrinter.addText(" KOT " + String.valueOf(mPreferences.getPrintCount()) + " \n");
+                }
 
                 method = "addFeedLine";
                 mPrinter.addFeedLine(1);
@@ -435,9 +568,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
 
-            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
 
             return false;
         }
@@ -463,7 +600,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
 
             try {
                 mPrinter.disconnect();
@@ -480,8 +622,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
-            System.out.println(" - - YES 2 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
+
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
 
             try {
                 mPrinter.disconnect();
@@ -509,9 +656,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
 
-            System.out.println(" - - YES 3 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
 
             return false;
         }
@@ -547,10 +698,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
-            System.out.println(" - - YES 4 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
-
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
             return false;
         }
 
@@ -562,9 +716,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
             mPrintToken.setEnabled(true);
             mProgressDialog.dismiss();
-            System.out.println(" - - YES 5 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+            System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-            mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+            if (mIsParcel) {
+                mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+            } else {
+                mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+            }
 
         }
 
@@ -596,9 +754,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                     mPrintToken.setEnabled(true);
                     mProgressDialog.dismiss();
 
-                    System.out.println(" - - YES 6 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+                    System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+                    if (mIsParcel) {
+                        mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+                    } else {
+                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+                    }
 
                 }
             });
@@ -614,9 +776,13 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                     mPrintToken.setEnabled(true);
                     mProgressDialog.dismiss();
-                    System.out.println(" - - YES 7 - - " + String.valueOf(mPreferences.getPrintCount() - 2) + " - - NO - - " + mPreferences.getPrintCount());
+                    System.out.println(" - - YES 1 - - " + String.valueOf(mPreferences.getPrintCount() - 1) + " - - NO - - " + mPreferences.getPrintCount());
 
-                    mPreferences.setPrintCount(mPreferences.getPrintCount() - 2);
+                    if (mIsParcel) {
+                        mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() - 1);
+                    } else {
+                        mPreferences.setPrintCount(mPreferences.getPrintCount() - 1);
+                    }
                 }
             });
         }
@@ -714,8 +880,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
                                     mPrintCount = 2;
 
                                 mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
-                                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
 
+                                if (mIsParcel) {
+                                    mPreferences.setPrintParcelCount(mPreferences.getPrintParcelCount() + 1);
+                                } else {
+                                    mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
+                                }
 //                            mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
 
                                 runPrintReceiptSequence();
@@ -731,7 +901,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                         mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 
-                        mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
+                        if (mIsParcel) {
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + 1, "P");
+                        } else {
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + 1, "L");
+                        }
 
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
 
@@ -751,7 +925,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener {
 
                     mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 
-                    mHotelDatabase.InsertRecord(mPreferences.getName(), mTimeStamp, "" + 1);
+                    if (mIsParcel) {
+                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + 1, "P");
+                    } else {
+                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + 1, "L");
+                    }
 
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
 

@@ -54,9 +54,9 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
     private String[] mTimeStampTemp;
 
-    private String mSno, mQty;
+    private String mSno, mQty, mFoodType;
 
-    private TextView mTextSno, mTextQty, mTextKot;
+    private TextView mTextSno, mTextQty, mTextKot, mTextitem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
         if (getIntent().getExtras() != null) {
             mSno = getIntent().getExtras().getString("SNO");
             mQty = getIntent().getExtras().getString("QTY");
+            mFoodType = getIntent().getExtras().getString("TYPE");
         }
 
         mWiFiBTStatus = new WiFiBTStatus();
@@ -92,6 +93,13 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
         mTextKot = (TextView) findViewById(R.id.text_kot);
         mTextKot.setText("(KOT) - " + mQty);
+
+        mTextitem = (TextView) findViewById(R.id.text_item);
+        if (mFoodType.equals("L")) {
+            mTextitem.setText("Lunch Token");
+        } else {
+            mTextitem.setText("Parcel Token");
+        }
 
         mTimeStampTemp = mTimeStamp.split(" ");
         mDate = mTimeStampTemp[0];
@@ -270,7 +278,11 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.addFeedLine(1);
 
             method = "addText";
-            mPrinter.addText(mSno + "           Lunch Token             " + mQty + "\n");
+            if (mFoodType.equals("L")) {
+                mPrinter.addText(mSno + "           Lunch Token             " + mQty + "\n");
+            } else {
+                mPrinter.addText(mSno + "           Parcel Token             " + mQty + "\n");
+            }
 
             method = "addText";
             mPrinter.addText(textData.toString());
