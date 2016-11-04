@@ -187,6 +187,7 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                 mIntent.putExtra("SNO", "" + mpos);
                 mIntent.putExtra("QTY", mDataList.get(pos).getTotalCount());
                 mIntent.putExtra("TYPE", mFoodType);
+                mIntent.putExtra("DATE", mDataList.get(pos).getDateWise());
                 startActivity(mIntent);
 //                mDataList
 

@@ -148,7 +148,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 if (mRadioType.getText().toString().equals("1")) {
                     mPreferences.setPrintType(1);
                 } else {
-                    mPreferences.setPrintType(2);
+                    mPreferences.setPrintType(1);
                 }
 
 //                Toast.makeText(mContext, mRadioType.getText(), Toast.LENGTH_SHORT).show();
