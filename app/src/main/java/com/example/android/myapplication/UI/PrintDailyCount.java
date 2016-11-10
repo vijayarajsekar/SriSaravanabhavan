@@ -300,11 +300,11 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mPrinter.addTextSize(1, 1);
 
             method = "addFeedLine";
-            mPrinter.addFeedLine(5);
+            mPrinter.addFeedLine(2);
 
             method = "addText";
 
-            mPrinter.addText("Report Date " + "                              " + mDateWise + "\n");
+            mPrinter.addText("Report Date " + "            " + mDateWise + "\n");
 
             method = "addText";
             mPrinter.addText(textData.toString());

@@ -28,6 +28,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,16 +38,22 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.android.myapplication.Adapter.PagerAdapter;
 import com.example.android.myapplication.Database.HotelDatabase;
+import com.example.android.myapplication.Fragments.ScreenLunch;
+import com.example.android.myapplication.Models.ReturnPojo;
 import com.example.android.myapplication.Models.UsersPojo;
 import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
@@ -61,17 +68,31 @@ public class MainActivity extends FragmentActivity {
 
     private Context mContext;
 
+    private String mTodayDate;
+
     private LinearLayout mSideMenuView;
-    private TextView mItem1, mItem2, mItem3, mItem4;
+    private TextView mItem1, mItem2, mItem3, mItem4, mItem5;
 
     private boolean mIsVisible = false;
 
     private Animation mAnimationIn, mAnimationOut;
 
-    private String mStrPasscode;
+    private String mStrPasscode, mStrCount, mTokId;
 
     private AlertDialog.Builder builder;
     private AlertDialog mAlertDialog;
+
+    private Calendar calendar;
+
+    private SimpleDateFormat mSimpleDateFormat;
+
+    private List<ReturnPojo> mReturnCountList;
+
+    private String mFoodType;
+
+    private EditText mReturnCount;
+    private EditText mTokenId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +118,7 @@ public class MainActivity extends FragmentActivity {
         mItem2 = (TextView) findViewById(R.id.menuview_item2);
         mItem3 = (TextView) findViewById(R.id.menuview_item3);
         mItem4 = (TextView) findViewById(R.id.menuview_item4);
+        mItem5 = (TextView) findViewById(R.id.menuview_item5);
 
         pager.setAdapter(mPagerAdapter);
 
@@ -105,6 +127,9 @@ public class MainActivity extends FragmentActivity {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
+
+        calendar = Calendar.getInstance();
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         /**
          * Set Logged in User Name
@@ -234,6 +259,57 @@ public class MainActivity extends FragmentActivity {
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "Invalid Password!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                mAlertDialog.show();
+            }
+        });
+
+        mItem5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mTodayDate = mSimpleDateFormat.format(calendar.getTime());
+
+                LayoutInflater mInflater = getLayoutInflater();
+                View mView = mInflater.inflate(R.layout.return_count_view, null);
+
+                mSideMenuView.setVisibility(View.GONE);
+                mSideMenuView.startAnimation(mAnimationOut);
+                mIsVisible = false;
+
+                builder = new AlertDialog.Builder(mContext, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Return Token");
+                builder.setIcon(R.drawable.ic_returns);
+                builder.setView(mView);
+                builder.setCancelable(false);
+
+                mAlertDialog = builder.create();
+
+                mTokenId = (EditText) mView.findViewById(R.id.token_id);
+                mReturnCount = (EditText) mView.findViewById(R.id.edit_count);
+
+                mAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mStrCount = mReturnCount.getText().toString();
+                        mTokId = mTokenId.getText().toString();
+
+                        if (mStrCount.length() == 0 || Integer.parseInt(mStrCount) <= 0) {
+                            Toast.makeText(mContext, "Invalid Count", Toast.LENGTH_SHORT).show();
+                        } else if (mStrCount.length() == 0) {
+                            Toast.makeText(mContext, "Invalid Token Id", Toast.LENGTH_SHORT).show();
+                        } else {
+                            int xx = new HotelDatabase(mContext).UpdateReturnToken(mTokId, Integer.parseInt(mStrCount));
+
+                            if (xx == 1) {
+                                Toast.makeText(mContext, "Token Updated", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(mContext, "Invalid Token Id", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

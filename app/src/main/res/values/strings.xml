@@ -67,6 +67,7 @@
     <string name="sidemenu_2">User Settings</string>
     <string name="sidemenu_3">Admin Reports</string>
     <string name="sidemenu_4">Reset Count</string>
+    <string name="sidemenu_5">Return Token</string>
 
     <string name="passcode">Enter Password</string>
 

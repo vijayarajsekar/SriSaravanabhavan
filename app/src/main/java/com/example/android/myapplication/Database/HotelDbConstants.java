@@ -7,7 +7,7 @@ public interface HotelDbConstants {
 
     public String TABLE_HOTEL = "HotelTable";
     public String TABLE_USERS = "Users";
-
+    public String TABLE_RETURN_COUNT = "RetCount";
     public int DATABASE_VERSION = 1;
 
     // Main Table Fields //
@@ -22,12 +22,17 @@ public interface HotelDbConstants {
 
     public static final String FOOD_TYPE = "FoodType";
 
+    public static final String RET_TOKEN_ID = "TokId";
+
+    public static final String RET_COUNT = "Count";
+
     public String CREATE_HOTEL_TABLE = "create table " + TABLE_HOTEL + "("
             + ID + " INTEGER primary key autoincrement,"
             + NAME + " TEXT not null,"
             + PRINT_DATE + " DATETIME not null,"
             + COUNT_NUMBER + " DATETIME not null,"
-            + FOOD_TYPE + " TEXT not null);";
+            + FOOD_TYPE + " DATETIME not null,"
+            + RET_TOKEN_ID + " TEXT not null);";
 
     public String CREATE_USERS_TABLE = "create table " + TABLE_USERS + "("
             + ID + " INTEGER primary key autoincrement,"
@@ -44,5 +49,8 @@ public interface HotelDbConstants {
 
     // Select All The Data From The Local Database
     public String SELECT_ALL_COUNT_DATE_WISE = "SELECT " + ID + "," + PRINT_DATE + ", sum(CountNumber) as TotalCount FROM " + TABLE_HOTEL + " WHERE ( " + PRINT_DATE + " BETWEEN " + "'$from' AND " + "'$to') AND FoodType IN ('$type') GROUP BY " + PRINT_DATE;
+
+    // Select All The Data From The Local Database
+    public String SELECT_RET_COUNT_DATE_WISE = "SELECT " + COUNT_NUMBER + " , " + FOOD_TYPE + " FROM " + TABLE_HOTEL + " WHERE " + RET_TOKEN_ID + " = " + "'$tokid'";
 
 }

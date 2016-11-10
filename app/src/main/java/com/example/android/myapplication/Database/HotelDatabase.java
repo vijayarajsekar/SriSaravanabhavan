@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.android.myapplication.Models.PrintPojo;
+import com.example.android.myapplication.Models.ReturnPojo;
 import com.example.android.myapplication.Models.UsersPojo;
+import com.example.android.myapplication.Preferences.AppPreferences;
+import com.example.android.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,7 @@ public class HotelDatabase implements HotelDbConstants {
      * @param count
      */
 
-    public void InsertRecord(String uname, String date, String count, String foodtype) {
+    public void InsertRecord(String uname, String date, String count, String foodtype, String tokenId) {
 
         try {
 
@@ -55,6 +59,7 @@ public class HotelDatabase implements HotelDbConstants {
             mValues.put(PRINT_DATE, date);
             mValues.put(COUNT_NUMBER, count);
             mValues.put(FOOD_TYPE, foodtype);
+            mValues.put(RET_TOKEN_ID, tokenId);
 
             mSQLiteDatabase.insert(TABLE_HOTEL, null, mValues);
 
@@ -65,36 +70,86 @@ public class HotelDatabase implements HotelDbConstants {
         }
     }
 
-
     /**
-     * @return All The Available Data List
+     * Update ReturnCount
+     *
+     * @param Id
+     * @param Count
      */
-    public List<PrintPojo> GetAllCounts() {
 
-        List<PrintPojo> contactList = new ArrayList<PrintPojo>();
+    public int UpdateReturnToken(String Id, int Count) {
+
+        String[] xx = GetAllCountById(Id).split(",");
+
+        if (xx == null)
+            return -1;
+
+        int x = 0;
+        int y = Integer.parseInt(xx[0]);
+        String mFoodType = xx[1];
+        int qqq = -1;
 
         try {
 
             OpenCon();
-            Cursor cursor = mSQLiteDatabase.rawQuery(SELECT_ALL_COUNT, null);
+
+            ContentValues mValues = new ContentValues();
+
+            if (y != 0)
+                x = y - Count;
+
+            if (x >= 0) {
+
+                mValues.put(COUNT_NUMBER, x);
+
+                if (mFoodType.toString().equals("P")) {
+                    new AppPreferences().setPrintParcelCount(new AppPreferences().getPrintParcelCount() - Count);
+                } else {
+                    new AppPreferences().setPrintCount(new AppPreferences().getPrintCount() - Count);
+                }
+
+            } else {
+                return -1;
+            }
+
+            qqq = mSQLiteDatabase.update(TABLE_HOTEL, mValues, RET_TOKEN_ID + " = ?",
+                    new String[]{String.valueOf(Id)});
+
+            System.out.println("~ ~ ~ ~ ~ qqq " + qqq);
+
+            CloseCon();
+
+        } catch (Exception ex) {
+            Log.v(TAG + " - - Insert User DB Err", ex.toString());
+        }
+
+        return qqq;
+    }
+
+    /**
+     * @return Count By Id
+     */
+    private String GetAllCountById(String _id) {
+
+        String mQuery = SELECT_RET_COUNT_DATE_WISE.replace("$tokid", _id);
+        String countRes = null;
+        try {
+
+            OpenCon();
+            Cursor cursor = mSQLiteDatabase.rawQuery(mQuery, null);
 
             if (cursor.moveToFirst()) {
 
                 do {
-                    contactList.add(new PrintPojo(
-
-                            cursor.getString(1),
-                            cursor.getString(2),
-                            cursor.getString(3)));
-
+                    countRes = cursor.getString(0) + "," + cursor.getString(1);
                 } while (cursor.moveToNext());
             }
-            return contactList;
+
         } catch (Exception ex) {
             Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
         }
 
-        return contactList;
+        return countRes;
     }
 
     /**
@@ -126,13 +181,14 @@ public class HotelDatabase implements HotelDbConstants {
 
                 } while (cursor.moveToNext());
             }
-            return contactList;
+
         } catch (Exception ex) {
             Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
         }
 
         return contactList;
     }
+
 
     /**
      * Add Single User

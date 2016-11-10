@@ -31,6 +31,7 @@ import com.example.android.myapplication.Utils.WiFiBTStatus;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * Created by VijayarajSekar on 8/31/2016.
@@ -54,7 +55,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 
     private int mPrintCount = 0;
 
-    private boolean mIsParcel = false;
+    public static boolean mIsParcel = false;
 
     private HotelDatabase mHotelDatabase;
 
@@ -74,7 +75,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 
     private int mTotalCountTop = 0;
     private int mTotalCountTopParcel = 0;
-
+    private String uniqueId;
     private TextView mText1, mText2, mText3, mText4, mText5, mText6, mText7, mText8, mText9, mText0, mTextFm, mTextPm;
 
     @Nullable
@@ -156,6 +157,8 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
                 Date1 = mTimeStampTemp[0];
                 mTime = mTimeStampTemp[1];
 
+                uniqueId = GetUUID();
+
                 System.out.println(" - - DATE - - " + Date1 + " - - TIME - - " + mTime);
 
 //                mPreferences.setPrintCount(mPreferences.getPrintCount() + 1);
@@ -175,7 +178,7 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 //                        mTime = mTimeStampTemp[1];
 
                         if (Integer.parseInt(mTotalCount) > 0 && Integer.parseInt(mTotalCount) < 101) {
-                            Toast.makeText(mContext,"Printing Started . . .",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Printing Started . . .", Toast.LENGTH_SHORT).show();
                             mIsParcel = false;
                             mTextFm.setEnabled(false);
                             mTextFm.setBackgroundColor(Color.parseColor("#ACAAAB"));
@@ -225,10 +228,12 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
                 mCalendar = Calendar.getInstance();
                 mTimeStamp1 = mSimpleDateFormat1.format(mCalendar.getTime());
 
+                uniqueId = GetUUID();
+
                 mTimeStampTemp = mTimeStamp1.split(" ");
                 Date1 = mTimeStampTemp[0];
                 mTime = mTimeStampTemp[1];
-                Toast.makeText(mContext, mTotalCount, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, mTotalCount, Toast.LENGTH_SHORT).show();
                 System.out.println(" - - DATE - - " + Date1 + " - - TIME - - " + mTime);
 
                 if (mWiFiBTStatus.isBluetoothAvailable()) {
@@ -335,9 +340,9 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
                 method = "addText";
 
                 if (mIsParcel) {
-                    mPrinter.addText("                                     " + mTotalCountTopParcel + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTopParcel + " \n");
                 } else {
-                    mPrinter.addText("                                     " + mTotalCountTop + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTop + " \n");
                 }
 
                 method = "addImage";
@@ -452,9 +457,9 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 
                 method = "addText";
                 if (mIsParcel) {
-                    mPrinter.addText("                                     " + mTotalCountTopParcel + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTopParcel + " \n");
                 } else {
-                    mPrinter.addText("                                     " + mTotalCountTop + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTop + " \n");
                 }
 
                 method = "addImage";
@@ -561,9 +566,9 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 
                 method = "addText";
                 if (mIsParcel) {
-                    mPrinter.addText("                                     " + mTotalCountTopParcel + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTopParcel + " \n");
                 } else {
-                    mPrinter.addText("                                     " + mTotalCountTop + " \n");
+                    mPrinter.addText(uniqueId + "                            " + mTotalCountTop + " \n");
                 }
 
                 method = "addImage";
@@ -1044,9 +1049,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
 
                         mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
                         if (mIsParcel) {
-                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "P");
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "P", uniqueId);
+                            mEditCount.setText("");
                         } else {
-                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "L");
+                            mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "L", uniqueId);
+                            mEditCount.setText("");
                         }
 
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
@@ -1072,9 +1079,11 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
                     mTimeStamp = mSimpleDateFormat.format(mCalendar.getTime());
 
                     if (mIsParcel) {
-                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "P");
+                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "P", uniqueId);
+                        mEditCount.setText("");
                     } else {
-                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "L");
+                        mHotelDatabase.InsertRecord(mPreferences.getName(), Date1, "" + mTotalCount, "L", uniqueId);
+                        mEditCount.setText("");
                     }
 
 //                    ShowMsg.showResult(code, makeErrorMessage(status), mContext);
@@ -1148,13 +1157,23 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
         }
     }
 
+    private String GetUUID() {
+
+        String _id = UUID.randomUUID().toString();
+
+        String[] qq = _id.split("-");
+
+        uniqueId = qq[0].substring(4);
+
+        return uniqueId;
+    }
+
     private void setcount(String _count) {
 
         if (mEditCount != null) {
 
             if (mEditCount.getText().toString().length() != 0 && mEditCount.getText().toString().charAt(0) == '0' && _count.equals("0")) {
                 mEditCount.setText("0");
-//                Toast.makeText(mContext, "Invalid count", Toast.LENGTH_SHORT).show();
             } else {
 
                 if (mEditCount.getText().toString().length() != 0 && mEditCount.getText().toString().charAt(0) == '0') {
@@ -1165,48 +1184,6 @@ public class ScreenLunch extends Fragment implements ReceiveListener, View.OnCli
                 mTotalCount = mEditCount.getText().toString();
             }
 
-
-//            if (Integer.parseInt(mTotalCount) != 0) {
-
-//            } else {
-//                Toast.makeText(mContext, "Invalid count", Toast.LENGTH_SHORT).show();
-//            }
         }
     }
-
-//    private void Enable1() {
-//
-//        mClear.setEnabled(true);
-//        mText1.setEnabled(true);
-//        mText2.setEnabled(true);
-//        mText3.setEnabled(true);
-//        mText4.setEnabled(true);
-//        mText5.setEnabled(true);
-//        mText6.setEnabled(true);
-//        mText7.setEnabled(true);
-//        mText8.setEnabled(true);
-//        mText9.setEnabled(true);
-//        mText0.setEnabled(true);
-//
-//        mTextFm.setEnabled(true);
-//        mTextPm.setEnabled(true);
-//    }
-//
-//    private void Disable2() {
-//
-//        mClear.setEnabled(false);
-//        mText1.setEnabled(false);
-//        mText2.setEnabled(false);
-//        mText3.setEnabled(false);
-//        mText4.setEnabled(false);
-//        mText5.setEnabled(false);
-//        mText6.setEnabled(false);
-//        mText7.setEnabled(false);
-//        mText8.setEnabled(false);
-//        mText9.setEnabled(false);
-//        mText0.setEnabled(false);
-//
-//        mTextFm.setEnabled(false);
-//        mTextPm.setEnabled(false);
-//    }
 }

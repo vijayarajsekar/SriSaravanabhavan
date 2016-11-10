@@ -91,33 +91,16 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
             Log.v(TAG, ex.toString());
         }
 
-//        for (int x = 1; x < 10; x++) {
-//
-////            mDataList.add(new PrintPojo("" + x, "07/" + x + "/1986", "" + x * 10));
-//
-//            mHotelDatabase.InsertRecord("User " + x, "2016-" + "0" + x + "-01", String.valueOf(x * 10));
-//        }
-
-        mHotelDatabase.InsertRecord("User " + 1, "2016-" + "0" + 1 + "-01", String.valueOf(99 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 2, "2016-" + "0" + 2 + "-01", String.valueOf(9 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 3, "2016-" + "0" + 2 + "-01", String.valueOf(8 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 4, "2016-" + "0" + 2 + "-01", String.valueOf(7 * 10), "P");
-        mHotelDatabase.InsertRecord("User " + 5, "2016-" + "0" + 5 + "-01", String.valueOf(5 * 10), "P");
-        mHotelDatabase.InsertRecord("User " + 6, "2016-" + "0" + 6 + "-01", String.valueOf(1 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 7, "2016-" + "0" + 7 + "-01", String.valueOf(2 * 10), "P");
-        mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "L");
-        mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "P");
-
-//
-//        mDataList = mHotelDatabase.GetAllCounts();
-//
-//        if (mDataList.size() != 0) {
-//
-//            mTotalCountAdapter = new TotalCountAdapter(mContext, mDataList);
-//
-//            mListView.setAdapter(mTotalCountAdapter);
-//        }
+        mHotelDatabase.InsertRecord("User " + 1, "2016-" + "0" + 1 + "-01", String.valueOf(10), "L", "A1");
+        mHotelDatabase.InsertRecord("User " + 2, "2016-" + "0" + 1 + "-01", String.valueOf(100), "L", "A2");
+        mHotelDatabase.InsertRecord("User " + 3, "2016-" + "0" + 1 + "-01", String.valueOf(8), "L", "A3");
+        mHotelDatabase.InsertRecord("User " + 4, "2016-" + "0" + 2 + "-01", String.valueOf(7 * 10), "P", "A4");
+        mHotelDatabase.InsertRecord("User " + 5, "2016-" + "0" + 5 + "-01", String.valueOf(5 * 10), "P", "A5");
+        mHotelDatabase.InsertRecord("User " + 6, "2016-" + "0" + 6 + "-06", String.valueOf(5 * 10), "L", "A6");
+        mHotelDatabase.InsertRecord("User " + 7, "2016-" + "0" + 7 + "-01", String.valueOf(2 * 10), "P", "A7");
+        mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10), "L", "A8");
+        mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "L", "A9");
+        mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "P", "A0");
 
         mFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
