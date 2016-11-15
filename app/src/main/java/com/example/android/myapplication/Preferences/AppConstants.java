@@ -26,9 +26,17 @@ public class AppConstants {
     String PRIINTER_LANG = "PrinterLang";
     String PRIINTER_TARGET = "PrinterTarget";
 
+    String IS_DUMMY_INSERT = "DummyInsert";
+
     String PRIINT_COUNT = "PrintCount";
 
     String PRIINT_PARCEL_COUNT = "PrintParcelCount";
 
+//    String RET_FM_COUNT = "RetFmCount";
+//    String RET_PM_COUNT = "RetPmCount";
+
     String PRIINT_TYPE = "PrintType";
+
+    String L_SERIAL = "LSerial";
+    String P_SERIAL = "PSerial";
 }

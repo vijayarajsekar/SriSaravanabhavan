@@ -132,4 +132,49 @@ public class AppPreferences extends AppConstants {
         mEditor.putInt(PRIINT_TYPE, values);
         mEditor.commit();
     }
+
+    public int getLSerialNo() {
+        return mPreferences.getInt(L_SERIAL, 0);
+    }
+
+    public void setLSerialNo(int values) {
+        mEditor.putInt(L_SERIAL, values);
+        mEditor.commit();
+    }
+
+    public int getPSerialNo() {
+        return mPreferences.getInt(P_SERIAL, 0);
+    }
+
+    public void setPSerialNo(int values) {
+        mEditor.putInt(P_SERIAL, values);
+        mEditor.commit();
+    }
+
+    public boolean getDummyInsert() {
+        return mPreferences.getBoolean(IS_DUMMY_INSERT, false);
+    }
+
+    public void setDummyInsert(boolean values) {
+        mEditor.putBoolean(IS_DUMMY_INSERT, values);
+        mEditor.commit();
+    }
+
+//    public int getRetFM() {
+//        return mPreferences.getInt(RET_FM_COUNT, 0);
+//    }
+//
+//    public void setRetFM(int values) {
+//        mEditor.putInt(RET_FM_COUNT, values);
+//        mEditor.commit();
+//    }
+//
+//    public int getRetPM() {
+//        return mPreferences.getInt(RET_PM_COUNT, 0);
+//    }
+//
+//    public void setRetPM(int values) {
+//        mEditor.putInt(RET_PM_COUNT, values);
+//        mEditor.commit();
+//    }
 }

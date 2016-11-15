@@ -60,6 +60,7 @@ public class HotelDatabase implements HotelDbConstants {
             mValues.put(COUNT_NUMBER, count);
             mValues.put(FOOD_TYPE, foodtype);
             mValues.put(RET_TOKEN_ID, tokenId);
+            mValues.put(RET_COUNT, "0");
 
             mSQLiteDatabase.insert(TABLE_HOTEL, null, mValues);
 
@@ -101,6 +102,7 @@ public class HotelDatabase implements HotelDbConstants {
             if (x >= 0) {
 
                 mValues.put(COUNT_NUMBER, x);
+                mValues.put(RET_COUNT, String.valueOf(Count));
 
                 if (mFoodType.toString().equals("P")) {
                     new AppPreferences().setPrintParcelCount(new AppPreferences().getPrintParcelCount() - Count);
@@ -177,7 +179,8 @@ public class HotelDatabase implements HotelDbConstants {
 
                             cursor.getString(0),
                             cursor.getString(1),
-                            cursor.getString(2)));
+                            cursor.getString(2),
+                            cursor.getString(3)));
 
                 } while (cursor.moveToNext());
             }
@@ -187,6 +190,35 @@ public class HotelDatabase implements HotelDbConstants {
         }
 
         return contactList;
+    }
+
+    /**
+     * @return All The Available Data List - DateWise
+     */
+    public String GetAllLastInsertedData() {
+
+        String mQuery = SELECT_LAST_INSERT_DATA;
+
+        String mRes = null;
+
+        try {
+
+            OpenCon();
+            Cursor cursor = mSQLiteDatabase.rawQuery(mQuery, null);
+
+            if (cursor.moveToFirst()) {
+
+                do {
+                    mRes = cursor.getString(3) + "," + cursor.getString(4) + "," + cursor.getString(5) /*+ "," + cursor.getString(3)
+                            + "," + cursor.getString(4) + "," + cursor.getString(5)*/;
+                } while (cursor.moveToNext());
+            }
+
+        } catch (Exception ex) {
+            Log.v(TAG + " - - GetAllUser DB Err", ex.toString());
+        }
+
+        return mRes;
     }
 
 

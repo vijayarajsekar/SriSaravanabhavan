@@ -18,6 +18,7 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.example.android.myapplication.Adapter.TotalCountAdapter;
 import com.example.android.myapplication.Database.HotelDatabase;
 import com.example.android.myapplication.Models.PrintPojo;
+import com.example.android.myapplication.Preferences.AppPreferences;
 import com.example.android.myapplication.R;
 
 import java.text.SimpleDateFormat;
@@ -91,16 +92,90 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
             Log.v(TAG, ex.toString());
         }
 
-        mHotelDatabase.InsertRecord("User " + 1, "2016-" + "0" + 1 + "-01", String.valueOf(10), "L", "A1");
-        mHotelDatabase.InsertRecord("User " + 2, "2016-" + "0" + 1 + "-01", String.valueOf(100), "L", "A2");
-        mHotelDatabase.InsertRecord("User " + 3, "2016-" + "0" + 1 + "-01", String.valueOf(8), "L", "A3");
-        mHotelDatabase.InsertRecord("User " + 4, "2016-" + "0" + 2 + "-01", String.valueOf(7 * 10), "P", "A4");
-        mHotelDatabase.InsertRecord("User " + 5, "2016-" + "0" + 5 + "-01", String.valueOf(5 * 10), "P", "A5");
-        mHotelDatabase.InsertRecord("User " + 6, "2016-" + "0" + 6 + "-06", String.valueOf(5 * 10), "L", "A6");
-        mHotelDatabase.InsertRecord("User " + 7, "2016-" + "0" + 7 + "-01", String.valueOf(2 * 10), "P", "A7");
-        mHotelDatabase.InsertRecord("User " + 8, "2016-" + "0" + 8 + "-01", String.valueOf(2 * 10), "L", "A8");
-        mHotelDatabase.InsertRecord("User " + 9, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "L", "A9");
-        mHotelDatabase.InsertRecord("User " + 20, "2016-" + "0" + 9 + "-01", String.valueOf(3 * 10), "P", "A0");
+
+
+        if (!new AppPreferences().getDummyInsert()) {
+
+            mHotelDatabase.InsertRecord("VCS ", "2016-11-10", "249", "L", "A1");
+            mHotelDatabase.InsertRecord("VCS ", "2016-11-10", "28", "P", "A2");
+            mHotelDatabase.InsertRecord("VCS ", "2016-11-11", "326", "L", "A3");
+            mHotelDatabase.InsertRecord("VCS ", "2016-11-11", "52", "P", "A4");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "L", "A1");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A2");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A3");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "7", "L", "A4");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A5");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "L", "A6");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "67", "L", "A7");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "25", "L", "A8");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "14", "L", "A9");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "5", "L", "A10");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "6", "L", "A11");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "47", "L", "A12");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "3", "L", "A13");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "9", "L", "A14");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "27", "L", "A15");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "L", "A16");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A17");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A18");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "5", "L", "A19");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "3", "L", "A20");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "7", "L", "A21");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "L", "A22");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A23");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A24");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "6", "L", "A25");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "7", "L", "A26");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A27");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A28");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A29");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "7", "L", "A30");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "L", "A31");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "4", "L", "A32");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "5", "L", "A33");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A34");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "2", "L", "A35");
+//
+//            // ------------------------------- //
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "5", "P", "Q1");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "P", "Q2");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "54", "P", "Q3");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "67", "P", "Q4");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "45", "P", "Q5");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "9", "P", "Q6");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "14", "P", "Q7");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "3", "P", "Q8");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "6", "P", "Q9");
+//
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "6", "P", "Q10");
+//            mHotelDatabase.InsertRecord("VCS ", "2016-11-15", "1", "P", "Q11");
+
+
+            new AppPreferences().setDummyInsert(true);
+        }
+
+        /**
+         *      VCS - 2016-11-15 - 249 - L - A1
+         *      VCS - 2016-11-15 - 28 - P - A2
+         *
+         *
+         *      VCS - 2016-11-15 - 326 - L - A3
+         *      VCS - 2016-11-15 - 52 - P - A4
+         *
+         */
 
         mFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +246,7 @@ public class DailyReportActivity extends AppCompatActivity implements DatePicker
                 mIntent.putExtra("QTY", mDataList.get(pos).getTotalCount());
                 mIntent.putExtra("TYPE", mFoodType);
                 mIntent.putExtra("DATE", mDataList.get(pos).getDateWise());
+                mIntent.putExtra("RETCOUNT", mDataList.get(pos).getRetCount());
                 startActivity(mIntent);
 //                mDataList
 

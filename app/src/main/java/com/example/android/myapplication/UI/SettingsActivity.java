@@ -169,7 +169,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             mRadioGroup.check(R.id.radio_one);
         } else {
             mRadioType = (RadioButton) findViewById(R.id.radio_one);
-            mRadioGroup.check(R.id.radio_two);
+            mRadioGroup.check(R.id.radio_one);
         }
     }
 

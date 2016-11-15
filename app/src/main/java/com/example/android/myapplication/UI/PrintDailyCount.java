@@ -54,7 +54,7 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
     private String[] mTimeStampTemp;
 
-    private String mSno, mQty, mFoodType, mDateWise;
+    private String mSno, mQty, mFoodType, mDateWise, mRetCount;
 
     private TextView mTextSno, mTextQty, mTextKot, mTextitem;
 
@@ -70,7 +70,8 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
             mSno = getIntent().getExtras().getString("SNO");
             mQty = getIntent().getExtras().getString("QTY");
             mFoodType = getIntent().getExtras().getString("TYPE");
-            mDateWise=getIntent().getExtras().getString("DATE");
+            mDateWise = getIntent().getExtras().getString("DATE");
+            mRetCount = getIntent().getExtras().getString("RETCOUNT");
         }
 
         mWiFiBTStatus = new WiFiBTStatus();
@@ -304,7 +305,21 @@ public class PrintDailyCount extends AppCompatActivity implements ReceiveListene
 
             method = "addText";
 
-            mPrinter.addText("Report Date " + "            " + mDateWise + "\n");
+            if (mFoodType.equals("L")) {
+                mPrinter.addText("Return - Full Meals : " + mRetCount + "       " + "\n");
+            } else {
+                mPrinter.addText("Return - Parcel Meals : " + mRetCount + "       " + "\n");
+            }
+
+            method = "addTextSize";
+            mPrinter.addTextSize(1, 1);
+
+            method = "addFeedLine";
+            mPrinter.addFeedLine(1);
+
+            method = "addText";
+
+            mPrinter.addText("Report Date :" + "       " + mDateWise + "\n");
 
             method = "addText";
             mPrinter.addText(textData.toString());

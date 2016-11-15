@@ -47,6 +47,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.example.android.myapplication.Adapter.PagerAdapter;
 import com.example.android.myapplication.Database.HotelDatabase;
 import com.example.android.myapplication.Fragments.ScreenLunch;
+import com.example.android.myapplication.Interfaces.ReprintInterface;
 import com.example.android.myapplication.Models.ReturnPojo;
 import com.example.android.myapplication.Models.UsersPojo;
 import com.example.android.myapplication.Preferences.AppPreferences;
@@ -71,7 +72,7 @@ public class MainActivity extends FragmentActivity {
     private String mTodayDate;
 
     private LinearLayout mSideMenuView;
-    private TextView mItem1, mItem2, mItem3, mItem4, mItem5;
+    private TextView mItem1, mItem2, mItem3, mItem4, mItem5, mItem6;
 
     private boolean mIsVisible = false;
 
@@ -92,7 +93,6 @@ public class MainActivity extends FragmentActivity {
 
     private EditText mReturnCount;
     private EditText mTokenId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,7 @@ public class MainActivity extends FragmentActivity {
         mItem3 = (TextView) findViewById(R.id.menuview_item3);
         mItem4 = (TextView) findViewById(R.id.menuview_item4);
         mItem5 = (TextView) findViewById(R.id.menuview_item5);
+        mItem6 = (TextView) findViewById(R.id.menuview_item6);
 
         pager.setAdapter(mPagerAdapter);
 
@@ -144,9 +145,46 @@ public class MainActivity extends FragmentActivity {
                 mSideMenuView.startAnimation(mAnimationOut);
                 mIsVisible = false;
 
-                startActivity(new Intent(mContext, SettingsActivity.class));
+                final EditText mPasscode;
+                LinearLayout.LayoutParams mLayoutParams = null;
 
-//                startActivity(new Intent(mContext, PrintDailyCount.class));
+                mPasscode = new EditText(mContext);
+                mPasscode.setHint(R.string.passcode);
+                mPasscode.setInputType(InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD);
+                mPasscode.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                mLayoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                mPasscode.setLayoutParams(mLayoutParams);
+
+                builder = new AlertDialog.Builder(mContext, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Pin Verification");
+                builder.setView(mPasscode, 50, 50, 50, 50);
+                builder.setIcon(R.drawable.icon_lock);
+                builder.setCancelable(false);
+
+                mAlertDialog = builder.create();
+
+                mAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mStrPasscode = mPasscode.getText().toString();
+
+                        String mTemp = "sri@" + new AppPreferences().getName();
+
+                        if (mStrPasscode != null && mStrPasscode.equals(mTemp)) {
+                            startActivity(new Intent(mContext, SettingsActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "Invalid Password!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                mAlertDialog.show();
+
             }
         });
 
@@ -254,6 +292,9 @@ public class MainActivity extends FragmentActivity {
                             mPreferences.setPrintCount(0);
                             mPreferences.setPrintParcelCount(0);
 
+                            mPreferences.setLSerialNo(0);
+                            mPreferences.setPSerialNo(0);
+
                             Toast.makeText(mContext, "Count reset done", Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -307,7 +348,7 @@ public class MainActivity extends FragmentActivity {
 
                             if (xx == 1) {
                                 Toast.makeText(mContext, "Token Updated", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(mContext, "Invalid Token Id", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -315,6 +356,20 @@ public class MainActivity extends FragmentActivity {
                 });
 
                 mAlertDialog.show();
+            }
+        });
+
+        mItem6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mItem6.setEnabled(false);
+
+                mSideMenuView.setVisibility(View.GONE);
+                mSideMenuView.startAnimation(mAnimationOut);
+                mIsVisible = false;
+
+                ScreenLunch.getListener().Reprint();
             }
         });
     }
